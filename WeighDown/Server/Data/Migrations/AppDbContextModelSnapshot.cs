@@ -51,15 +51,15 @@ namespace WeighDown.Server.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "13a59e49-861f-4370-8778-cd2d33cd0f90",
-                            ConcurrencyStamp = "d5bf2381-1eab-433c-9605-6817c0915e70",
+                            Id = "5a3b4249-735a-4e13-856f-4a3cde70dea9",
+                            ConcurrencyStamp = "8a3e2bd6-99a2-4d78-8d30-a4e29396cb3b",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "e760f5ac-6179-402d-a1f9-d9daeef9905f",
-                            ConcurrencyStamp = "d41e41cd-7c8c-4da3-b9ab-a29f36312015",
+                            Id = "061af4ee-cf5a-4c23-ae54-c583d0ff0527",
+                            ConcurrencyStamp = "07334965-9892-43c1-95f5-625e10bea345",
                             Name = "General",
                             NormalizedName = "GENERAL"
                         });
@@ -169,6 +169,124 @@ namespace WeighDown.Server.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("WeighDown.Shared.Models.Competition", b =>
+                {
+                    b.Property<int>("CompetitionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CompetitionId"), 1L, 1);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedByUserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NumberOfWeeks")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("PlayInAmount")
+                        .HasColumnType("money");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("CompetitionId");
+
+                    b.ToTable("Competitions");
+                });
+
+            modelBuilder.Entity("WeighDown.Shared.Models.Contestant", b =>
+                {
+                    b.Property<int>("ContestantId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ContestantId"), 1L, 1);
+
+                    b.Property<int>("CompetitionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WeighDownUserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ContestantId");
+
+                    b.HasIndex("CompetitionId");
+
+                    b.ToTable("Contestants");
+                });
+
+            modelBuilder.Entity("WeighDown.Shared.Models.WeighInDeadline", b =>
+                {
+                    b.Property<int>("WeighInDeadlineId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WeighInDeadlineId"), 1L, 1);
+
+                    b.Property<int>("CompetitionId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DeadlineDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.HasKey("WeighInDeadlineId");
+
+                    b.HasIndex("CompetitionId");
+
+                    b.ToTable("WeighInDeadlines");
+                });
+
+            modelBuilder.Entity("WeighDown.Shared.Models.WeightLog", b =>
+                {
+                    b.Property<int>("WeightLogId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WeightLogId"), 1L, 1);
+
+                    b.Property<int>("CompetitionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ContestantId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("MeasurementDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("WeightMeasurement")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("WeightLogId");
+
+                    b.HasIndex("ContestantId");
+
+                    b.ToTable("WeightLogs");
                 });
 
             modelBuilder.Entity("WeighDown.Shared.WeighDownUser", b =>
@@ -295,6 +413,45 @@ namespace WeighDown.Server.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("WeighDown.Shared.Models.Contestant", b =>
+                {
+                    b.HasOne("WeighDown.Shared.Models.Competition", null)
+                        .WithMany("Contestants")
+                        .HasForeignKey("CompetitionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("WeighDown.Shared.Models.WeighInDeadline", b =>
+                {
+                    b.HasOne("WeighDown.Shared.Models.Competition", null)
+                        .WithMany("WeighInDeadlines")
+                        .HasForeignKey("CompetitionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("WeighDown.Shared.Models.WeightLog", b =>
+                {
+                    b.HasOne("WeighDown.Shared.Models.Contestant", null)
+                        .WithMany("WeightLogs")
+                        .HasForeignKey("ContestantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("WeighDown.Shared.Models.Competition", b =>
+                {
+                    b.Navigation("Contestants");
+
+                    b.Navigation("WeighInDeadlines");
+                });
+
+            modelBuilder.Entity("WeighDown.Shared.Models.Contestant", b =>
+                {
+                    b.Navigation("WeightLogs");
                 });
 #pragma warning restore 612, 618
         }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WeighDown.Server.Data.Configuration;
 using WeighDown.Shared;
+using WeighDown.Shared.Models;
 
 namespace WeighDown.Server.Data
 {
@@ -12,9 +13,19 @@ namespace WeighDown.Server.Data
         {
         }
 
+        public DbSet<Competition> Competitions { get; set; }
+        public DbSet<Contestant> Contestants { get; set; }
+        public DbSet<WeightLog> WeightLogs { get; set; }
+        public DbSet<WeighInDeadline> WeighInDeadlines { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            
+            modelBuilder.Entity<Competition>(c =>
+            {
+                c.Property(c => c.PlayInAmount).HasColumnType("money");
+            });
 
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
         }
