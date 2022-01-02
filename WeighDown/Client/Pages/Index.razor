@@ -1,0 +1,30 @@
+﻿@page "/"
+
+<PageTitle>WeighDown</PageTitle>
+
+<AuthorizeView>
+    <Authorized>
+        <div class="row">
+            <div class="col-12 text-center">
+                <h3>You're signed in!</h3>
+            </div>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <div class="row">
+            <div class="col-12 text-center">
+                <h3>Welcome to WeighDown</h3>
+                <p>Log in or Register to get started</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6 text-end">
+                <a href="/user/login">Log In</a>
+            </div>
+            <div class="col-6 text-start">
+                <a href="/user/register">Register</a>
+            </div>
+        </div>
+    </NotAuthorized>
+</AuthorizeView>
