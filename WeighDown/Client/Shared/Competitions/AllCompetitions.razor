@@ -1,0 +1,44 @@
+﻿<Condition Evaluation="Competitions is not null">
+    <Match>
+        <div class="row">
+            <div class="col-12">
+                <h4>All Competitions</h4>
+            </div>
+        </div>
+
+        <Condition Evaluation="Competitions.Any()">
+            <Match>
+                <div class="row">
+                    <Iterations Items="Competitions.OrderByDescending(c => c.StartDate)">
+                        <div class="col-12 col-md-4">
+                            <div class="card shadow mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title"></h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">@context.EndDate.ToShortDateString()</h6>
+                                    <p class="card-text">@context.Contestants.Count contestants.</p>
+                                    <a href="#" class="card-link">Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </Iterations>
+                </div>
+            </Match>
+
+            <NotMatch>
+                <div class="row">
+                    <div class="col-12">
+                        <p>There are no competitions yet.</p>
+                    </div>
+                </div>
+            </NotMatch>
+        </Condition>
+    </Match>
+
+    <NotMatch>
+        <div class="row">
+            <div class="col-12 text-center">
+                <LoadingSpinner MarginTop="50" />
+            </div>
+        </div>
+    </NotMatch>
+</Condition>
