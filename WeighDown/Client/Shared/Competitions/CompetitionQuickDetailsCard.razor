@@ -1,0 +1,60 @@
+﻿@*<div class="col-12 col-md-4">
+    <div class="card shadow mb-3">
+        <div class="card-body">
+            <h5 class="card-title"></h5>
+            <h6 class="card-subtitle mb-2 text-muted">@context.EndDate.ToShortDateString()</h6>
+            <p class="card-text">@context.Contestants.Count contestants.</p>
+            <a href="#" class="card-link">Details</a>
+        </div>
+    </div>
+</div>*@
+
+<div class="card shadow">
+    <div class="card-header">
+        <h5>@Competition.Name</h5>
+    </div>
+    <div class="card-body">
+        <ul>
+            <li>
+                @if (DateTime.Today > Competition.StartDate)
+                {
+                    <span>Started on @Competition.StartDate.ToShortDateString()</span>
+                }
+                else
+                {
+                    <span>Starts on @Competition.StartDate.ToShortDateString()</span>
+                }
+            </li>
+            <li>
+                @if (DateTime.Today > Competition.EndDate)
+                {
+                    <span>Ended on @Competition.EndDate.ToShortDateString()</span>
+                }
+                else
+                {
+                    <span>Ends on @Competition.EndDate.ToShortDateString()</span>
+                }
+            </li>
+            <li>
+                @if (Competition.Contestants != null)
+                {
+                    @if (Competition.Contestants.Any())
+                    {
+                        <span>@Competition.Contestants.Count() contestants</span>
+                    }
+                    else
+                    {
+                        <span>0 contestants</span>
+                    }
+                }
+                else
+                {
+                    <span>0 contestants</span>
+                }
+            </li>
+        </ul>
+        <button @onclick='() => Navigation.NavigateTo($"/competition-detail/{Competition.CompetitionId}")' class="btn btn-secondary btn-block" type="button">
+            Details
+        </button>
+    </div>
+</div>

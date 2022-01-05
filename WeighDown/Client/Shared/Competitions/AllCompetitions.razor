@@ -11,14 +11,7 @@
                 <div class="row">
                     <Iterations Items="Competitions.OrderByDescending(c => c.StartDate)">
                         <div class="col-12 col-md-4">
-                            <div class="card shadow mb-3">
-                                <div class="card-body">
-                                    <h5 class="card-title"></h5>
-                                    <h6 class="card-subtitle mb-2 text-muted">@context.EndDate.ToShortDateString()</h6>
-                                    <p class="card-text">@context.Contestants.Count contestants.</p>
-                                    <a href="#" class="card-link">Details</a>
-                                </div>
-                            </div>
+                            <CompetitionQuickDetailsCard Competition="context" />
                         </div>
                     </Iterations>
                 </div>
