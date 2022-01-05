@@ -15,3 +15,11 @@ html, body {
 .validation-message {
     color: red;
 }
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+div.card {
+    margin-bottom: 20px;
+}
