@@ -25,37 +25,37 @@
 
     <div class="row">
         <div class="col-12">
-            <div class="mb-3">
+            <div class="form-group">
                 <label class="form-label">Email</label>
                 <InputText class="form-control" @bind-Value="RegisterVM.Email" />
                 <ValidationMessage For="@(() => RegisterVM.Email)" />
             </div>
 
-            <div class="mb-3">
+            <div class="form-group">
                 <label class="form-label">Password</label>
                 <InputText type="password" class="form-control" @bind-Value="RegisterVM.Password" />
                 <ValidationMessage For="@(() => RegisterVM.Password)" />
             </div>
 
-            <div class="mb-3">
+            <div class="form-group">
                 <label class="form-label">Confirm Password</label>
                 <InputText type="password" class="form-control" @bind-Value="RegisterVM.ConfirmPassword" />
                 <ValidationMessage For="@(() => RegisterVM.ConfirmPassword)" />
             </div>
 
-            <div class="mb-3">
+            <div class="form-group">
                 <label class="form-label">First Name</label>
                 <InputText class="form-control" @bind-Value="RegisterVM.FirstName" />
                 <ValidationMessage For="@(() => RegisterVM.FirstName)" />
             </div>
 
-            <div class="mb-3">
+            <div class="form-group">
                 <label class="form-label">Last Name</label>
                 <InputText class="form-control" @bind-Value="RegisterVM.LastName" />
                 <ValidationMessage For="@(() => RegisterVM.LastName)" />
             </div>
 
-            <div class="mb-3 text-end">
+            <div class="form-group text-end">
                 <button type="reset" class="btn btn-secondary" @onclick='() => Navigation.NavigateTo("/")'>Cancel</button>
 
                 <Condition Evaluation="DisableSubmit">
