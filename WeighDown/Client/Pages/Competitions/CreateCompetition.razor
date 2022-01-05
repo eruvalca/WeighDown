@@ -74,17 +74,20 @@
                     type="reset">
                 Cancel
             </button>
-            <button class="btn btn-success btn-block" type="submit">
-                @if (IsFormSubmitting)
-                {
-                    <span class="spinner-border spinner-border-sm"></span>
-                    <span> Submitting</span>
-                }
-                else
-                {
-                    <span>Submit</span>
-                }
-            </button>
+            <Condition Evaluation="IsFormSubmitting">
+                <Match>
+                    <button class="btn btn-success btn-block" disabled type="submit">
+                        <span class="spinner-border spinner-border-sm"></span>
+                        <span> Submitting</span>
+                    </button>
+                </Match>
+
+                <NotMatch>
+                    <button class="btn btn-success btn-block" type="submit">
+                        <span>Submit</span>
+                    </button>
+                </NotMatch>
+            </Condition>
         </div>
     </div>
 </EditForm>
