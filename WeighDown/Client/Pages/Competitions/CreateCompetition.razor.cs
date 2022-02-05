@@ -140,7 +140,6 @@ namespace WeighDown.Client.Pages.Competitions
         private async Task HandleSubmit()
         {
             IsFormSubmitting = true;
-            Competition.CreateDate = Competition.CreateDate.ToUniversalTime();
             Competition.CreatedBy = Username;
             Competition.CreatedByUserId = UserId;
 

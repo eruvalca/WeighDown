@@ -25,6 +25,9 @@ namespace WeighDown.Server.Data
             modelBuilder.Entity<Competition>(c =>
             {
                 c.Property(c => c.PlayInAmount).HasColumnType("money");
+                c.Property(c => c.ThirdPlacePrizeAmount).HasColumnType("money");
+                c.Property(c => c.SecondPlacePrizeAmount).HasColumnType("money");
+                c.Property(c => c.FirstPlacePrizeAmount).HasColumnType("money");
             });
 
             modelBuilder.ApplyConfiguration(new RoleConfiguration());

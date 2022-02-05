@@ -55,12 +55,17 @@ namespace WeighDown.Server.Controllers
                 return BadRequest();
             }
 
+            competition.CreateDate = competition.CreateDate.ToUniversalTime();
+            competition.StartDate = competition.StartDate.ToUniversalTime();
+            competition.EndDate = competition.EndDate.ToUniversalTime();
+
             _context.Entry(competition).State = EntityState.Modified;
 
-            foreach (var deadline in competition.WeighInDeadlines)
+            competition.WeighInDeadlines.ForEach(w =>
             {
-                deadline.WeighInDeadlineId = 0;
-            }
+                w.DeadlineDate = w.DeadlineDate.ToUniversalTime();
+                w.WeighInDeadlineId = 0;
+            });
 
             await _context.WeighInDeadlines.AddRangeAsync(competition.WeighInDeadlines);
 
@@ -86,6 +91,12 @@ namespace WeighDown.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<Competition>> PostCompetition(Competition competition)
         {
+            competition.CreateDate = competition.CreateDate.ToUniversalTime();
+            competition.StartDate = competition.StartDate.ToUniversalTime();
+            competition.EndDate = competition.EndDate.ToUniversalTime();
+
+            competition.WeighInDeadlines.ForEach(w => w.DeadlineDate = w.DeadlineDate.ToUniversalTime());
+
             _context.Competitions.Add(competition);
             await _context.SaveChangesAsync();
 

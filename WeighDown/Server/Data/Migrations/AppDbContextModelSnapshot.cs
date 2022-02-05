@@ -51,15 +51,15 @@ namespace WeighDown.Server.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "5a3b4249-735a-4e13-856f-4a3cde70dea9",
-                            ConcurrencyStamp = "8a3e2bd6-99a2-4d78-8d30-a4e29396cb3b",
+                            Id = "09cfb017-7b9c-478a-aded-61bcb260801d",
+                            ConcurrencyStamp = "3d13bd76-cbdb-4540-ae48-7557397449ee",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "061af4ee-cf5a-4c23-ae54-c583d0ff0527",
-                            ConcurrencyStamp = "07334965-9892-43c1-95f5-625e10bea345",
+                            Id = "311eae48-06ef-4465-aa0a-487081749e2a",
+                            ConcurrencyStamp = "4d8b47ce-6ddd-4a75-a295-5c5650ec0bba",
                             Name = "General",
                             NormalizedName = "GENERAL"
                         });
@@ -191,6 +191,9 @@ namespace WeighDown.Server.Data.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<decimal>("FirstPlacePrizeAmount")
+                        .HasColumnType("money");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -200,8 +203,14 @@ namespace WeighDown.Server.Data.Migrations
                     b.Property<decimal>("PlayInAmount")
                         .HasColumnType("money");
 
+                    b.Property<decimal>("SecondPlacePrizeAmount")
+                        .HasColumnType("money");
+
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<decimal>("ThirdPlacePrizeAmount")
+                        .HasColumnType("money");
 
                     b.HasKey("CompetitionId");
 

@@ -16,5 +16,10 @@ namespace WeighDown.Shared.Models
         public string WeighDownUserId { get; set; }
         public int CompetitionId { get; set; }
         public List<WeightLog> WeightLogs { get; set; }
+
+        public string GetFullName()
+        {
+            return string.Concat(FirstName, " ", LastName);
+        }
     }
 }

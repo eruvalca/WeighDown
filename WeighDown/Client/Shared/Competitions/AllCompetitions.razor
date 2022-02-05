@@ -9,7 +9,7 @@
         <Condition Evaluation="Competitions.Any()">
             <Match>
                 <div class="row">
-                    <Iterations Items="Competitions.OrderByDescending(c => c.StartDate)">
+                    <Iterations Items="Competitions">
                         <div class="col-12 col-md-4">
                             <CompetitionQuickDetailsCard Competition="context" />
                         </div>
@@ -20,7 +20,12 @@
             <NotMatch>
                 <div class="row">
                     <div class="col-12">
-                        <p>There are no competitions yet.</p>
+                        <p>No competitions to show.</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <button type="button" class="btn btn-secondary" @onclick='() => Navigation.NavigateTo("/new-competition")'>Create New</button>
                     </div>
                 </div>
             </NotMatch>

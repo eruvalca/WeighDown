@@ -1,0 +1,157 @@
+﻿@page "/competition-detail/{CompetitionId:int}"
+
+<Condition Evaluation="Competition is not null">
+    <Match>
+        <div class="row">
+            <div class="col-8">
+                <h3>@Competition.Name</h3>
+            </div>
+            <div class="col-4 text-end">
+                <button type="button" class="btn btn-sm btn-danger" @onclick="HandleDelete">
+                    Delete
+                </button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <span class="card-text"><span class="text-muted">Starts</span><br />@Competition.StartDate.ToLocalTime().ToShortDateString()</span>
+                            </div>
+                            <div class="col-6">
+                                <span class="card-text"><span class="text-muted">Ends</span><br />@Competition.EndDate.ToLocalTime().ToShortDateString()</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <span class="card-text"><span class="text-muted">Entry Fee</span><br />@Competition.PlayInAmount.ToString("C")</span>
+                            </div>
+                            <div class="col-6">
+                                <details>
+                                    <summary class="card-text">
+                                        <span class="text-muted">Contestants</span><br />@(Competition.Contestants.Any() ? Competition.Contestants.Count : 0)
+                                    </summary>
+                                    <ul>
+                                        <Iterations Items="Competition.Contestants.OrderBy(c => c.LastName).ThenBy(c => c.FirstName)">
+                                            <li class="card-text"><small>@context.GetFullName()</small></li>
+                                        </Iterations>
+                                    </ul>
+                                </details>
+                            </div>
+                        </div>
+
+                        <Condition Evaluation="Competition.StartDate.ToLocalTime().Date <= DateTime.Today.Date">
+                            <Match>
+                                <div class="row">
+                                    <div class="col-4 text-center">
+                                        <span class="card-text"><span class="text-muted">First</span><br />@Competition.FirstPlacePrizeAmount.ToString("C")</span>
+                                    </div>
+                                    <div class="col-4 text-center">
+                                        <span class="card-text"><span class="text-muted">Second</span><br />@Competition.SecondPlacePrizeAmount.ToString("C")</span>
+                                    </div>
+                                    <div class="col-4 text-center">
+                                        <span class="card-text"><span class="text-muted">Third</span><br />@Competition.ThirdPlacePrizeAmount.ToString("C")</span>
+                                    </div>
+                                </div>
+                            </Match>
+                        </Condition>
+
+                        <Condition Evaluation="CanUserJoin">
+                            <Match>
+                                <hr />
+                                <Condition Evaluation="DisableJoin">
+                                    <Match>
+                                        <div class="row">
+                                            <div class="col-12 text-center">
+                                                <button type="button" class="btn btn-info" disabled>
+                                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                    Joining...
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </Match>
+
+                                    <NotMatch>
+                                        <div class="row">
+                                            <div class="col-12 text-center">
+                                                <button type="button" class="btn btn-info" @onclick="HandleContestantJoin">Join</button>
+                                            </div>
+                                        </div>
+                                    </NotMatch>
+                                </Condition>
+                            </Match>
+                        </Condition>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <h3>Deadlines</h3>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <Condition Evaluation="NextWeighInDeadline.DeadlineDate.Date == DateTime.Today.Date">
+                            <Match>
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <span class="card-text">Next deadline is today. You must weigh in by midnight to stay in the competition.</span>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <button type="button" class="btn btn-info">
+                                            Weigh In
+                                        </button>
+                                    </div>
+                                </div>
+                            </Match>
+
+                            <NotMatch>
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <span class="card-text">Next deadline is @NextWeighInDeadline.DeadlineDate.ToString("D")</span>
+                                    </div>
+                                </div>
+                            </NotMatch>
+                        </Condition>
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-12">
+                                <details>
+                                    <summary class="card-text">
+                                        Remaining Deadlines
+                                    </summary>
+                                    <ul>
+                                        <Iterations Items="RemainingWeighInDeadlines.OrderBy(w => w.DeadlineDate)">
+                                            <li class="card-text"><small>@context.DeadlineDate.ToLocalTime().ToString("D")</small></li>
+                                        </Iterations>
+                                    </ul>
+                                </details>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </Match>
+
+    <NotMatch>
+        <div class="row">
+            <div class="col-12 text-center">
+                <LoadingSpinner MarginTop="50" />
+            </div>
+        </div>
+    </NotMatch>
+</Condition>
