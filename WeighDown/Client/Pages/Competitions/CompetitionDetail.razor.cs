@@ -29,6 +29,7 @@ namespace WeighDown.Client.Pages.Competitions
         private WeighInDeadline NextWeighInDeadline { get; set; }
         private List<WeighInDeadline> RemainingWeighInDeadlines { get; set; }
         private Contestant UserContestant { get; set; }
+        private bool HasUserWeighedIn { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -55,6 +56,11 @@ namespace WeighDown.Client.Pages.Competitions
             CanUserJoin = Competition.IsUserEligibleToJoin(WeighDownUser);
 
             UserContestant = Competition.Contestants.FirstOrDefault(c => c.WeighDownUserId == WeighDownUser.Id);
+
+            if (UserContestant is not null)
+            {
+                HasUserWeighedIn = UserContestant.WeightLogs.Any(w => w.MeasurementDate.ToLocalTime().Date == NextWeighInDeadline.DeadlineDate.ToLocalTime().Date);
+            }
         }
 
         private async Task HandleContestantJoin()

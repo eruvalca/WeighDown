@@ -61,11 +61,11 @@ namespace WeighDown.Server.Controllers
 
             _context.Entry(competition).State = EntityState.Modified;
 
-            competition.WeighInDeadlines.ForEach(w =>
-            {
-                w.DeadlineDate = w.DeadlineDate.ToUniversalTime();
-                w.WeighInDeadlineId = 0;
-            });
+            //competition.WeighInDeadlines.ForEach(w =>
+            //{
+            //    w.DeadlineDate = w.DeadlineDate.ToUniversalTime();
+            //    w.WeighInDeadlineId = 0;
+            //});
 
             await _context.WeighInDeadlines.AddRangeAsync(competition.WeighInDeadlines);
 

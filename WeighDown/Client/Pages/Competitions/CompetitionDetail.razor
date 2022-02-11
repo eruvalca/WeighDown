@@ -30,16 +30,23 @@
                                 <span class="card-text"><span class="text-muted">Entry Fee</span><br />@Competition.PlayInAmount.ToString("C")</span>
                             </div>
                             <div class="col-6">
-                                <details>
-                                    <summary class="card-text">
-                                        <span class="text-muted">Contestants</span><br />@(Competition.Contestants.Any() ? Competition.Contestants.Count : 0)
-                                    </summary>
-                                    <ul>
-                                        <Iterations Items="Competition.Contestants.OrderBy(c => c.LastName).ThenBy(c => c.FirstName)">
-                                            <li class="card-text"><small>@context.GetFullName()</small></li>
-                                        </Iterations>
-                                    </ul>
-                                </details>
+                                <Condition Evaluation="Competition.Contestants.Any()">
+                                    <Match>
+                                        <details>
+                                            <summary class="card-text">
+                                                <span class="text-muted">Contestants</span>
+                                            </summary>
+                                            <ul>
+                                                <Iterations Items="Competition.Contestants.OrderBy(c => c.LastName).ThenBy(c => c.FirstName)">
+                                                    <li class="card-text"><small>@context.GetFullName()</small></li>
+                                                </Iterations>
+                                            </ul>
+                                        </details>
+                                    </Match>
+                                    <NotMatch>
+                                        <span class="card-text">No Conestants yet.</span>
+                                    </NotMatch>
+                                </Condition>
                             </div>
                         </div>
 
@@ -95,56 +102,74 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-12">
-                <div class="card shadow">
-                    <div class="card-body">
-                        <Condition Evaluation="NextWeighInDeadline.DeadlineDate.Date == DateTime.Today.Date">
-                            <Match>
-                                <div class="row">
-                                    <div class="col-12 text-center">
-                                        <span class="card-text">Next deadline is today. You must weigh in by midnight to stay in the competition.</span>
-                                    </div>
-                                </div>
+        <Condition Evaluation="NextWeighInDeadline is not null">
+            <Match>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card shadow">
+                            <div class="card-body">
+                                <Condition Evaluation="NextWeighInDeadline.DeadlineDate.Date == DateTime.Today.Date">
+                                    <Match>
+                                        <div class="row">
+                                            <div class="col-12 text-center">
+                                                <span class="card-text">Next deadline is today.</span>
+                                                <br />
+                                                <Condition Evaluation="!CanUserJoin">
+                                                    <Match>
+                                                        <Condition Evaluation="HasUserWeighedIn">
+                                                            <Match>
+                                                                <span class="card-text">You already weighed in today.</span>
+                                                            </Match>
 
-                                <div class="row">
-                                    <div class="col-12 text-center">
-                                        <button type="button" class="btn btn-info">
-                                            Weigh In
-                                        </button>
-                                    </div>
-                                </div>
-                            </Match>
+                                                            <NotMatch>
+                                                                <span class="card-text">You must weigh in by midnight to stay in the competition.</span>
+                                                                <br />
+                                                                <button type="button" class="btn btn-info">
+                                                                    Weigh In
+                                                                </button>
+                                                            </NotMatch>
+                                                        </Condition>
+                                                    </Match>
+                                                </Condition>
+                                            </div>
+                                        </div>
+                                    </Match>
 
-                            <NotMatch>
-                                <div class="row">
-                                    <div class="col-12 text-center">
-                                        <span class="card-text">Next deadline is @NextWeighInDeadline.DeadlineDate.ToString("D")</span>
-                                    </div>
-                                </div>
-                            </NotMatch>
-                        </Condition>
+                                    <NotMatch>
+                                        <div class="row">
+                                            <div class="col-12 text-center">
+                                                <span class="card-text">Next deadline is @NextWeighInDeadline.DeadlineDate.ToString("D")</span>
+                                            </div>
+                                        </div>
+                                    </NotMatch>
+                                </Condition>
 
-                        <hr />
+                                <Condition Evaluation="RemainingWeighInDeadlines.Any()">
+                                    <Match>
+                                        <hr />
 
-                        <div class="row">
-                            <div class="col-12">
-                                <details>
-                                    <summary class="card-text">
-                                        Remaining Deadlines
-                                    </summary>
-                                    <ul>
-                                        <Iterations Items="RemainingWeighInDeadlines.OrderBy(w => w.DeadlineDate)">
-                                            <li class="card-text"><small>@context.DeadlineDate.ToLocalTime().ToString("D")</small></li>
-                                        </Iterations>
-                                    </ul>
-                                </details>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <details>
+                                                    <summary class="card-text">
+                                                        Remaining Deadlines
+                                                    </summary>
+                                                    <ul>
+                                                        <Iterations Items="RemainingWeighInDeadlines.OrderBy(w => w.DeadlineDate)">
+                                                            <li class="card-text"><small>@context.DeadlineDate.ToLocalTime().ToString("D")</small></li>
+                                                        </Iterations>
+                                                    </ul>
+                                                </details>
+                                            </div>
+                                        </div>
+                                    </Match>
+                                </Condition>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </Match>
+        </Condition>
     </Match>
 
     <NotMatch>
