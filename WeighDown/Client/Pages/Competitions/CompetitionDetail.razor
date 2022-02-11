@@ -124,7 +124,7 @@
                                                             <NotMatch>
                                                                 <span class="card-text">You must weigh in by midnight to stay in the competition.</span>
                                                                 <br />
-                                                                <button type="button" class="btn btn-info">
+                                                                <button type="button" class="btn btn-info" @onclick='() => Navigation.NavigateTo($"/new-weight-log/{Competition.CompetitionId}")'>
                                                                     Weigh In
                                                                 </button>
                                                             </NotMatch>

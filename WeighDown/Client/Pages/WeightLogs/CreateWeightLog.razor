@@ -1,0 +1,90 @@
+﻿@page "/new-weight-log/{CompetitionId:int}"
+
+<Condition Evaluation="Competition is not null && UserContestant is not null">
+    <Match>
+        <div class="row">
+            <div class="col-8">
+                <h3>Record Your Weight</h3>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <EditForm Model="@WeightLog" OnValidSubmit="HandleSubmit">
+                    <div class="form-group">
+                        <label>Date</label>
+                        <InputDate @bind-Value="WeightLog.MeasurementDate" class="form-control" disabled />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Photo of your weight measurement</label>
+                        <InputFile accept=".jpg,.jpeg,.png" class="form-control-file" OnChange="@HandleImageSelected" disabled="@IsImageDataLoading" />
+                    </div>
+
+                    <Condition Evaluation="!IsImageDataLoading">
+                        <Match>
+                            <Condition Evaluation="!string.IsNullOrEmpty(WeightLog.ImageUrl) && ReadMeasurements.Any()">
+                                <Match>
+                                    <div class="form-group text-center">
+                                        <img class="img-fluid rounded" src="@WeightLog.ImageUrl" />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="form-check">
+                                            <InputCheckbox @bind-Value="IsOverrideMeasurement" class="form-check-input" />
+                                            <label class="form-check-label">Override measurement?</label>
+                                        </div>
+                                    </div>
+                                </Match>
+                            </Condition>
+
+                            <div class="form-group">
+                                <label>Weight</label>
+                                <InputNumber @bind-Value="WeightLog.WeightMeasurement" class="form-control" disabled="@(!IsOverrideMeasurement)" />
+                            </div>
+                        </Match>
+
+                        <NotMatch>
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <LoadingSpinner MarginTop="50" MarginBottom="50" />
+                                </div>
+                            </div>
+                        </NotMatch>
+                    </Condition>
+
+                    <div class="form-group row">
+                        <div class="col-12 text-end">
+                            <button class="btn btn-secondary" @onclick='() => Navigation.NavigateTo($"/competition-detail/{Competition.CompetitionId}")'
+                                    type="reset">
+                                Cancel
+                            </button>
+                            <Condition Evaluation="IsFormSubmitting">
+                                <Match>
+                                    <button class="btn btn-success" disabled type="submit">
+                                        <span class="spinner-border spinner-border-sm"></span>
+                                        <span> Submitting</span>
+                                    </button>
+                                </Match>
+
+                                <NotMatch>
+                                    <button class="btn btn-success" type="submit">
+                                        <span>Submit</span>
+                                    </button>
+                                </NotMatch>
+                            </Condition>
+                        </div>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </Match>
+
+    <NotMatch>
+        <div class="row">
+            <div class="col-12 text-center">
+                <LoadingSpinner MarginTop="50" />
+            </div>
+        </div>
+    </NotMatch>
+</Condition>

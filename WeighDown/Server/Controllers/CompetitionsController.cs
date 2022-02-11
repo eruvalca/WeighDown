@@ -67,7 +67,7 @@ namespace WeighDown.Server.Controllers
             //    w.WeighInDeadlineId = 0;
             //});
 
-            await _context.WeighInDeadlines.AddRangeAsync(competition.WeighInDeadlines);
+            //await _context.WeighInDeadlines.AddRangeAsync(competition.WeighInDeadlines);
 
             try
             {

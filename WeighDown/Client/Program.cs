@@ -19,6 +19,8 @@ builder.Services.AddScoped<WeightLogsService>();
 builder.Services.AddScoped<WeighInDeadlinesService>();
 
 builder.Services.AddScoped<UsersService>();
+builder.Services.AddScoped<UploadService>();
+builder.Services.AddScoped<ComputerVisionService>();
 
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddAuthorizationCore();

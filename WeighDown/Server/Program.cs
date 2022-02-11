@@ -13,6 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 string symmetricKey;
+string issuer;
+string audience;
 
 if (builder.Environment.IsDevelopment())
 {
@@ -20,6 +22,9 @@ if (builder.Environment.IsDevelopment())
         options.UseSqlServer(builder.Configuration["DefaultConnection"]));
 
     symmetricKey = builder.Configuration["SymmetricKey"];
+
+    issuer = "https://localhost:7018/";
+    audience = "https://localhost:7018/";
 }
 else
 {
@@ -27,6 +32,9 @@ else
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
     symmetricKey = builder.Configuration.GetValue<string>("SymmetricKey");
+
+    issuer = "https://weighdown.azurewebsites.net/";
+    audience = "https://weighdown.azurewebsites.net/";
 }
 
 builder.Services.AddIdentity<WeighDownUser, IdentityRole>(options =>
@@ -46,10 +54,8 @@ builder.Services.AddAuthentication(auth =>
     {
         ValidateIssuer = true,
         ValidateAudience = true,
-        ValidIssuer = "https://localhost:7018/",
-        ValidAudience = "https://localhost:7018/",
-        //ValidIssuer = "https://weighdown.azurewebsites.net/",
-        //ValidAudience = "https://weighdown.azurewebsites.net/",
+        ValidIssuer = issuer,
+        ValidAudience = audience,
         RequireExpirationTime = true,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(symmetricKey)),
         ValidateIssuerSigningKey = true
@@ -58,6 +64,7 @@ builder.Services.AddAuthentication(auth =>
 
 builder.Services.AddSingleton<SymmetricKeyService>();
 builder.Services.AddScoped<UsersService>();
+builder.Services.AddScoped<ComputerVisionService>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();

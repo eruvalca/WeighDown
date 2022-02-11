@@ -9,8 +9,10 @@ namespace WeighDown.Shared.Models
     public class WeightLog
     {
         public int WeightLogId { get; set; }
+        public decimal RecognizedWeightMeasurement { get; set; }
         public decimal WeightMeasurement { get; set; }
         public DateTime MeasurementDate { get; set; } = DateTime.Now;
+        public string ImageUrl { get; set; }
 
         public int CompetitionId { get; set; }
         public int ContestantId { get; set; }
