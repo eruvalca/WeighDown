@@ -10,7 +10,7 @@ namespace WeighDown.Server.Services
         private readonly string _endpoint;
         private readonly ComputerVisionClient _client;
 
-        public ComputerVisionService(IConfiguration configuration, IWebHostEnvironment env)
+        public ComputerVisionService(IConfiguration configuration)
         {
             _subKey = configuration["AzureComputerVisionSubKey"];
             _endpoint = configuration["AzureComputerVisionEndpoint"];
