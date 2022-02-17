@@ -15,16 +15,9 @@ namespace WeighDown.Server.Controllers
     {
         private readonly string _azureConnectionString;
 
-        public UploadController(IConfiguration configuration, IWebHostEnvironment env)
+        public UploadController(IConfiguration configuration)
         {
-            if (env.IsDevelopment())
-            {
-                _azureConnectionString = configuration["AzureBlobConnectionString"];
-            }
-            else
-            {
-                _azureConnectionString = configuration.GetValue<string>("AzureBlobConnectionString");
-            }
+            _azureConnectionString = configuration["AzureBlobConnectionString"];
         }
 
         [HttpPost("weightlog")]

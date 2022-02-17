@@ -34,7 +34,6 @@ namespace WeighDown.Client.Pages.WeightLogs
         private WeightLog WeightLog { get; set; } = new WeightLog();
         private bool IsFormSubmitting { get; set; } = false;
         private List<decimal> ReadMeasurements { get; set; } = new List<decimal>();
-        private decimal ReadMeasurement { get; set; }
         private bool IsOverrideMeasurement { get; set; } = false;
         private bool IsImageDataLoading { get; set; } = false;
 
@@ -63,8 +62,8 @@ namespace WeighDown.Client.Pages.WeightLogs
 
             WeightLog.ImageUrl = string.Empty;
             ReadMeasurements = new List<decimal>();
-            ReadMeasurement = 0;
             WeightLog.WeightMeasurement = 0;
+            WeightLog.RecognizedWeightMeasurement = 0;
             IsOverrideMeasurement = false;
 
             WeightLog.ImageUrl = await UploadService.UploadWeightLogImage(e.File);
@@ -78,15 +77,15 @@ namespace WeighDown.Client.Pages.WeightLogs
                 }
             }
 
-            ReadMeasurement = ReadMeasurements.FirstOrDefault();
+            WeightLog.RecognizedWeightMeasurement = ReadMeasurements.FirstOrDefault();
 
-            if (ReadMeasurement == 0)
+            if (WeightLog.RecognizedWeightMeasurement == 0)
             {
                 IsOverrideMeasurement = true;
             }
             else
             {
-                WeightLog.WeightMeasurement = ReadMeasurement;
+                WeightLog.WeightMeasurement = WeightLog.RecognizedWeightMeasurement;
             }
 
             IsImageDataLoading = false;

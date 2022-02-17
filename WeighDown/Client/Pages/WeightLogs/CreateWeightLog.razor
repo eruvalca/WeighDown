@@ -29,7 +29,7 @@
                                         <img class="img-fluid rounded" src="@WeightLog.ImageUrl" />
                                     </div>
 
-                                    <Condition Evaluation="ReadMeasurement == 0">
+                                    <Condition Evaluation="WeightLog.RecognizedWeightMeasurement == 0">
                                         <Match>
                                             <div class="form-group">
                                                 <span class="text-danger">We were unable to read a measurement from your image. Please override below.</span>
