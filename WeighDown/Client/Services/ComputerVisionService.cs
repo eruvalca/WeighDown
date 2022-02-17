@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Json;
 using System.Web;
+using WeighDown.Shared;
 
 namespace WeighDown.Client.Services
 {
@@ -12,10 +13,11 @@ namespace WeighDown.Client.Services
             _client = client;
         }
 
-        public async Task<List<string>> GetWeightLogImageData(string url)
+        public async Task<List<string>> PostWeightLogImageData(ComputerVisionDTO cpuVisionDto)
         {
-            url = HttpUtility.UrlEncode(url);
-            return await _client.GetFromJsonAsync<List<string>>($"computervision/weightlog/{url}");
+            cpuVisionDto.Url = HttpUtility.UrlEncode(cpuVisionDto.Url);
+            var response = await _client.PostAsJsonAsync("computervision", cpuVisionDto);
+            return await response.Content.ReadFromJsonAsync<List<string>>();
         }
     }
 }

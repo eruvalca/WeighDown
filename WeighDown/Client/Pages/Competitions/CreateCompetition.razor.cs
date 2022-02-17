@@ -143,6 +143,12 @@ namespace WeighDown.Client.Pages.Competitions
             Competition.CreatedBy = Username;
             Competition.CreatedByUserId = UserId;
 
+            Competition.CreateDate = Competition.CreateDate.ToUniversalTime();
+            Competition.StartDate = Competition.StartDate.ToUniversalTime();
+            Competition.EndDate = Competition.EndDate.ToUniversalTime();
+
+            Competition.WeighInDeadlines.ForEach(w => w.DeadlineDate = w.DeadlineDate.ToUniversalTime());
+
             Competition = await CompetitionsService.PostCompetition(Competition);
             Navigation.NavigateTo($"/competition-detail/{Competition.CompetitionId}");
         }

@@ -50,6 +50,9 @@ namespace WeighDown.Client.Pages.WeightLogs
         private async Task HandleSubmit()
         {
             IsFormSubmitting = true;
+
+            WeightLog.MeasurementDate = WeightLog.MeasurementDate.ToUniversalTime();
+
             WeightLog = await WeightLogsService.PostWeightLog(WeightLog);
             Navigation.NavigateTo($"competition-detail/{Competition.CompetitionId}");
         }
@@ -59,7 +62,7 @@ namespace WeighDown.Client.Pages.WeightLogs
             IsImageDataLoading = true;
 
             WeightLog.ImageUrl = await UploadService.UploadWeightLogImage(e.File);
-            var reads = await ComputerVisionService.GetWeightLogImageData(WeightLog.ImageUrl);
+            var reads = await ComputerVisionService.PostWeightLogImageData(new ComputerVisionDTO() { Url = WeightLog.ImageUrl });
 
             foreach (var read in reads)
             {

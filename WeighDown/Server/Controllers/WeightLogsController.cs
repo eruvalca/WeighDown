@@ -70,8 +70,6 @@ namespace WeighDown.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<WeightLog>> PostWeightLog(WeightLog weightLog)
         {
-            weightLog.MeasurementDate = weightLog.MeasurementDate.ToUniversalTime();
-
             _context.WeightLogs.Add(weightLog);
             await _context.SaveChangesAsync();
 

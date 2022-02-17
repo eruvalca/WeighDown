@@ -41,7 +41,7 @@
                         case 'installed':
                             if (navigator.serviceWorker.controller) {
                                 // new update available
-                                let continueInstall = confirm("New update is available. Please select 'Ok' to continue to install. You must update for the applicatin to work properly.");
+                                let continueInstall = confirm("A new update is available. Please select 'Ok' to continue to install. You must update for the application to work properly.");
 
                                 if (continueInstall) {
                                     newWorker.postMessage({ action: 'skipWaiting' });

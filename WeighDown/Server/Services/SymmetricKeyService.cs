@@ -16,14 +16,15 @@ namespace WeighDown.Server.Services
 
         public SymmetricSecurityKey GetSymmetricKey()
         {
-            if (_env.EnvironmentName == Environments.Development)
-            {
-                return new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["SymmetricKey"]));
-            }
-            else
-            {
-                return new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetValue<string>("SymmetricKey")));
-            }
+            return new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["SymmetricKey"]));
+            //if (_env.EnvironmentName == Environments.Development)
+            //{
+            //    return new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["SymmetricKey"]));
+            //}
+            //else
+            //{
+            //    return new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetValue<string>("SymmetricKey")));
+            //}
         }
     }
 }

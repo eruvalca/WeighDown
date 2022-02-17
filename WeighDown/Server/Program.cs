@@ -10,28 +10,41 @@ using WeighDown.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var azureAppConfigConnectionString = builder.Configuration["AppConfigConnectionString"];
+builder.Host.ConfigureAppConfiguration(builder =>
+{
+    builder.AddAzureAppConfiguration(azureAppConfigConnectionString);
+});
+
 // Add services to the container.
+
+var testConfig = builder.Configuration["Tester"];
 
 string symmetricKey;
 string issuer;
 string audience;
 
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration["DefaultConnection"]));
+
+symmetricKey = builder.Configuration["SymmetricKey"];
+
 if (builder.Environment.IsDevelopment())
 {
-    builder.Services.AddDbContext<AppDbContext>(options =>
-        options.UseSqlServer(builder.Configuration["DefaultConnection"]));
+    //builder.Services.AddDbContext<AppDbContext>(options =>
+    //    options.UseSqlServer(builder.Configuration["DefaultConnection"]));
 
-    symmetricKey = builder.Configuration["SymmetricKey"];
+    //symmetricKey = builder.Configuration["SymmetricKey"];
 
     issuer = "https://localhost:7018/";
     audience = "https://localhost:7018/";
 }
 else
 {
-    builder.Services.AddDbContext<AppDbContext>(options =>
-        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    //builder.Services.AddDbContext<AppDbContext>(options =>
+    //    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-    symmetricKey = builder.Configuration.GetValue<string>("SymmetricKey");
+    //symmetricKey = builder.Configuration.GetValue<string>("SymmetricKey");
 
     issuer = "https://weighdown.azurewebsites.net/";
     audience = "https://weighdown.azurewebsites.net/";

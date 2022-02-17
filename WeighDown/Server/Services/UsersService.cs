@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 using WeighDown.Shared;
 
 namespace WeighDown.Server.Services
@@ -11,13 +12,15 @@ namespace WeighDown.Server.Services
     {
         private readonly UserManager<WeighDownUser> _userManager;
         private readonly IConfiguration _configuration;
+        private readonly IWebHostEnvironment _env;
         private readonly SymmetricKeyService _symmetricKeyService;
 
-        public UsersService(UserManager<WeighDownUser> userManager, IConfiguration configuration, SymmetricKeyService symmetricKeyService)
+        public UsersService(UserManager<WeighDownUser> userManager, IConfiguration configuration, SymmetricKeyService symmetricKeyService, IWebHostEnvironment env)
         {
             _userManager = userManager;
             _configuration = configuration;
             _symmetricKeyService = symmetricKeyService;
+            _env = env;
         }
 
         public async Task<AuthResponse> Register(RegisterVM model)
@@ -93,12 +96,23 @@ namespace WeighDown.Server.Services
             }
 
             var symmetricKey = _symmetricKeyService.GetSymmetricKey();
+            string issuer;
+            string audience;
+
+            if (_env.EnvironmentName == Environments.Development)
+            {
+                issuer = "https://localhost:7018/";
+                audience = "https://localhost:7018/";
+            }
+            else
+            {
+                issuer = "https://weighdown.azurewebsites.net/";
+                audience = "https://weighdown.azurewebsites.net/";
+            }
 
             var token = new JwtSecurityToken(
-                issuer: "https://localhost:7018/",
-                audience: "https://localhost:7018/",
-                //issuer: "https://weighdown.azurewebsites.net/",
-                //audience: "https://weighdown.azurewebsites.net/",
+                issuer: issuer,
+                audience: audience,
                 claims: claims,
                 expires: DateTime.Now.AddDays(30),
                 signingCredentials: new SigningCredentials(symmetricKey, SecurityAlgorithms.HmacSha256)

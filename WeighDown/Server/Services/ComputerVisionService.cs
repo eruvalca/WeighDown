@@ -12,16 +12,8 @@ namespace WeighDown.Server.Services
 
         public ComputerVisionService(IConfiguration configuration, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                _subKey = configuration["AzureComputerVisionSubKey"];
-                _endpoint = configuration["AzureComputerVisionEndpoint"];
-            }
-            else
-            {
-                _subKey = configuration.GetValue<string>("AzureComputerVisionSubKey");
-                _endpoint = configuration.GetValue<string>("AzureComputerVisionEndpoint");
-            }
+            _subKey = configuration["AzureComputerVisionSubKey"];
+            _endpoint = configuration["AzureComputerVisionEndpoint"];
 
             _client = new ComputerVisionClient(new ApiKeyServiceClientCredentials(_subKey))
             {
@@ -50,6 +42,7 @@ namespace WeighDown.Server.Services
                 results.Status == OperationStatusCodes.NotStarted));
 
             var textUrlFileResults = results.AnalyzeResult.ReadResults;
+
             foreach (ReadResult page in textUrlFileResults)
             {
                 foreach (Line line in page.Lines)

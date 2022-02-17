@@ -7,9 +7,13 @@
                 <h3>@Competition.Name</h3>
             </div>
             <div class="col-4 text-end">
-                <button type="button" class="btn btn-sm btn-danger" @onclick="HandleDelete">
-                    Delete
-                </button>
+                <Condition Evaluation='User.IsInRole("Admin")'>
+                    <Match>
+                        <button type="button" class="btn btn-sm btn-danger" @onclick="HandleDelete">
+                            Delete
+                        </button>
+                    </Match>
+                </Condition>
             </div>
         </div>
 
@@ -108,7 +112,7 @@
                     <div class="col-12">
                         <div class="card shadow">
                             <div class="card-body">
-                                <Condition Evaluation="NextWeighInDeadline.DeadlineDate.Date == DateTime.Today.Date">
+                                <Condition Evaluation="NextWeighInDeadline.DeadlineDate.ToLocalTime().Date == DateTime.Today.ToLocalTime().Date">
                                     <Match>
                                         <div class="row">
                                             <div class="col-12 text-center">
@@ -138,7 +142,7 @@
                                     <NotMatch>
                                         <div class="row">
                                             <div class="col-12 text-center">
-                                                <span class="card-text">Next deadline is @NextWeighInDeadline.DeadlineDate.ToString("D")</span>
+                                                <span class="card-text">Next deadline is @NextWeighInDeadline.DeadlineDate.ToLocalTime().ToString("D")</span>
                                             </div>
                                         </div>
                                     </NotMatch>

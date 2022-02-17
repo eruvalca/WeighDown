@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WeighDown.Server.Services;
+using WeighDown.Shared;
 
 namespace WeighDown.Server.Controllers
 {
@@ -17,10 +18,10 @@ namespace WeighDown.Server.Controllers
             _computerVisionService = computerVisionService;
         }
 
-        [HttpGet("weightlog/{url}")]
-        public async Task<ActionResult<List<string>>> GetWeightLogImageData(string url)
+        [HttpPost]
+        public async Task<ActionResult<List<string>>> GetWeightLogImageData(ComputerVisionDTO cpuVisionDto)
         {
-            return await _computerVisionService.ReadFileUrl(url);
+            return await _computerVisionService.ReadFileUrl(cpuVisionDto.Url);
         }
     }
 }

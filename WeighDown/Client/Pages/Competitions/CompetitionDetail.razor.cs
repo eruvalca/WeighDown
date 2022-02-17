@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
+using System.Security.Claims;
 using WeighDown.Client.Services;
 using WeighDown.Shared;
 using WeighDown.Shared.Models;
@@ -9,6 +11,9 @@ namespace WeighDown.Client.Pages.Competitions
     [Authorize]
     public partial class CompetitionDetail
     {
+        [CascadingParameter]
+        private Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
         [Inject]
         private CompetitionsService CompetitionsService { get; set; }
         [Inject]
@@ -21,6 +26,7 @@ namespace WeighDown.Client.Pages.Competitions
         [Parameter]
         public int CompetitionId { get; set; }
 
+        private ClaimsPrincipal User { get; set; }
         private Competition Competition { get; set; }
         private WeighDownUser WeighDownUser { get; set; }
         private bool CanUserJoin { get; set; }
@@ -33,6 +39,8 @@ namespace WeighDown.Client.Pages.Competitions
 
         protected override async Task OnInitializedAsync()
         {
+            User = (await AuthenticationStateTask).User;
+
             WeighDownUser = await UsersService.GetUserDetails();
             Competition = await CompetitionsService.GetCompetition(CompetitionId);
 
