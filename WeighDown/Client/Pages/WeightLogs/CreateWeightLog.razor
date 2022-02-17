@@ -23,11 +23,19 @@
 
                     <Condition Evaluation="!IsImageDataLoading">
                         <Match>
-                            <Condition Evaluation="!string.IsNullOrEmpty(WeightLog.ImageUrl) && ReadMeasurements.Any()">
+                            <Condition Evaluation="!string.IsNullOrEmpty(WeightLog.ImageUrl)">
                                 <Match>
                                     <div class="form-group text-center">
                                         <img class="img-fluid rounded" src="@WeightLog.ImageUrl" />
                                     </div>
+
+                                    <Condition Evaluation="ReadMeasurement == 0">
+                                        <Match>
+                                            <div class="form-group">
+                                                <span class="text-danger">We were unable to read a measurement from your image. Please override below.</span>
+                                            </div>
+                                        </Match>
+                                    </Condition>
 
                                     <div class="form-group">
                                         <div class="form-check">
@@ -59,19 +67,23 @@
                                     type="reset">
                                 Cancel
                             </button>
-                            <Condition Evaluation="IsFormSubmitting">
+                            <Condition Evaluation="!IsImageDataLoading">
                                 <Match>
-                                    <button class="btn btn-success" disabled type="submit">
-                                        <span class="spinner-border spinner-border-sm"></span>
-                                        <span> Submitting</span>
-                                    </button>
-                                </Match>
+                                    <Condition Evaluation="IsFormSubmitting">
+                                        <Match>
+                                            <button class="btn btn-success" disabled type="submit">
+                                                <span class="spinner-border spinner-border-sm"></span>
+                                                <span> Submitting</span>
+                                            </button>
+                                        </Match>
 
-                                <NotMatch>
-                                    <button class="btn btn-success" type="submit">
-                                        <span>Submit</span>
-                                    </button>
-                                </NotMatch>
+                                        <NotMatch>
+                                            <button class="btn btn-success" type="submit">
+                                                <span>Submit</span>
+                                            </button>
+                                        </NotMatch>
+                                    </Condition>
+                                </Match>
                             </Condition>
                         </div>
                     </div>

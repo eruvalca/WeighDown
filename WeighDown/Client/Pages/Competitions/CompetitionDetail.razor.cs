@@ -89,6 +89,11 @@ namespace WeighDown.Client.Pages.Competitions
             CanUserJoin = Competition.IsUserEligibleToJoin(WeighDownUser);
             UserContestant = Competition.Contestants.FirstOrDefault(c => c.WeighDownUserId == WeighDownUser.Id);
 
+            if (UserContestant is not null)
+            {
+                HasUserWeighedIn = UserContestant.WeightLogs.Any(w => w.MeasurementDate.ToLocalTime().Date == NextWeighInDeadline.DeadlineDate.ToLocalTime().Date);
+            }
+
             DisableJoin = false;
         }
 

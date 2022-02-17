@@ -26,7 +26,30 @@ namespace WeighDown.Shared.Models
 
         public bool IsUserEligibleToJoin(WeighDownUser user)
         {
-            return StartDate.ToLocalTime().Date >= DateTime.Today.Date && user is not null && (!Contestants.Any() || Contestants.Any(c => c.WeighDownUserId != user.Id));
+            var hasCompetitionStarted = StartDate.ToLocalTime().Date > DateTime.Today.Date;
+
+            if (hasCompetitionStarted)
+            {
+                return false;
+            }
+
+            var hasCompetitionAnyContestants = Contestants.Any();
+
+            if (hasCompetitionAnyContestants)
+            {
+                var isUserAlreadyContestant = Contestants.Any(c => c.WeighDownUserId == user.Id);
+
+                if (isUserAlreadyContestant)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         public WeighInDeadline GetNextWeighInDeadline(DateTime date)

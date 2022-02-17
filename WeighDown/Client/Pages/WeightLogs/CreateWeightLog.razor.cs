@@ -61,6 +61,12 @@ namespace WeighDown.Client.Pages.WeightLogs
         {
             IsImageDataLoading = true;
 
+            WeightLog.ImageUrl = string.Empty;
+            ReadMeasurements = new List<decimal>();
+            ReadMeasurement = 0;
+            WeightLog.WeightMeasurement = 0;
+            IsOverrideMeasurement = false;
+
             WeightLog.ImageUrl = await UploadService.UploadWeightLogImage(e.File);
             var reads = await ComputerVisionService.PostWeightLogImageData(new ComputerVisionDTO() { Url = WeightLog.ImageUrl });
 

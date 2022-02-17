@@ -118,7 +118,7 @@
                                             <div class="col-12 text-center">
                                                 <span class="card-text">Next deadline is today.</span>
                                                 <br />
-                                                <Condition Evaluation="!CanUserJoin">
+                                                <Condition Evaluation="UserContestant is not null">
                                                     <Match>
                                                         <Condition Evaluation="HasUserWeighedIn">
                                                             <Match>

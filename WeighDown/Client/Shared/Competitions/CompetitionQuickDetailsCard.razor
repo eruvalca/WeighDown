@@ -4,6 +4,7 @@
         <h5 class="card-title">@Competition.Name</h5>
         <h5 class="card-text"><small class="text-muted">Entry Fee: </small>@Competition.PlayInAmount.ToString("C")</h5>
         <h5 class="card-text"><small class="text-muted">Starts on: </small>@Competition.StartDate.ToLocalTime().ToShortDateString()</h5>
+        <h5 class="card-text"><small class="text-muted">Ends on: </small>@Competition.EndDate.ToLocalTime().ToShortDateString()</h5>
         <button type="button" class="btn btn-sm btn-secondary" @onclick='() => Navigation.NavigateTo($"/competition-detail/{Competition.CompetitionId}")'>
             Details
         </button>
