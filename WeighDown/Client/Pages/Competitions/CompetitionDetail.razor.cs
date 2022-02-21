@@ -37,6 +37,9 @@ namespace WeighDown.Client.Pages.Competitions
         private Contestant UserContestant { get; set; }
         private bool HasUserWeighedIn { get; set; }
 
+
+        private Dictionary<WeighInDeadline, List<ContestantResultSet>> CompetitionResults { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
             User = (await AuthenticationStateTask).User;
@@ -69,6 +72,8 @@ namespace WeighDown.Client.Pages.Competitions
             {
                 HasUserWeighedIn = UserContestant.WeightLogs.Any(w => w.MeasurementDate.ToLocalTime().Date == NextWeighInDeadline.DeadlineDate.ToLocalTime().Date);
             }
+
+            CompetitionResults = Competition.GetWeeklyResults();
         }
 
         private async Task HandleContestantJoin()

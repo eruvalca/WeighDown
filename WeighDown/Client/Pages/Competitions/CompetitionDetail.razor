@@ -100,14 +100,14 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-12">
-                <h3>Deadlines</h3>
-            </div>
-        </div>
-
         <Condition Evaluation="NextWeighInDeadline is not null">
             <Match>
+                <div class="row">
+                    <div class="col-12">
+                        <h3>Deadlines</h3>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="col-12">
                         <div class="card shadow">
@@ -185,6 +185,81 @@
                                             </div>
                                         </div>
                                     </Match>
+                                </Condition>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </Match>
+        </Condition>
+
+        <Condition Evaluation="CompetitionResults is not null">
+            <Match>
+                <div class="row">
+                    <div class="col-12">
+                        <h3>Weekly Results</h3>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card shadow">
+                            <div class="card-body">
+                                <Condition Evaluation="CompetitionResults.Any()">
+                                    <Match>
+                                        <table class="table table-sm table-striped table-borderless table-responsive">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <Iterations Items="Competition.Contestants.OrderBy(c => c.FirstName)">
+                                                        <th>@context.FirstName</th>
+                                                    </Iterations>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <Iterations Items="CompetitionResults">
+                                                    <tr>
+                                                        <td><strong>@context.Key.DeadlineDate.ToString("M/d")</strong></td>
+                                                        <Iterations Items="context.Value.OrderBy(c => c.Contestant.FirstName)" Context="resultSet">
+                                                            <Condition Evaluation="resultSet.IsDeadlineWinner">
+                                                                <Match>
+                                                                    <td class="text-success"><strong>@resultSet.PercentChange.ToString("P2")</strong></td>
+                                                                </Match>
+
+                                                                <NotMatch>
+                                                                    <Condition Evaluation="resultSet.PercentChange > 0">
+                                                                        <Match>
+                                                                            <td class="text-info"><strong>@resultSet.PercentChange.ToString("P2")</strong></td>
+                                                                        </Match>
+                                                                    </Condition>
+                                                                </NotMatch>
+                                                            </Condition>
+
+                                                            <Condition Evaluation="resultSet.PercentChange < 0">
+                                                                <Match>
+                                                                    <td class="text-danger"><strong>@resultSet.PercentChange.ToString("P2")</strong></td>
+                                                                </Match>
+                                                            </Condition>
+
+                                                            <Condition Evaluation="resultSet.PercentChange == 0">
+                                                                <Match>
+                                                                    <td class="text-warning"><strong>@resultSet.PercentChange.ToString("P2")</strong></td>
+                                                                </Match>
+                                                            </Condition>
+                                                        </Iterations>
+                                                    </tr>
+                                                </Iterations>
+                                            </tbody>
+                                        </table>
+                                    </Match>
+
+                                    <NotMatch>
+                                        <div class="row">
+                                            <div class="col-12 text-center">
+                                                <span class="card-text">No results yet.</span>
+                                            </div>
+                                        </div>
+                                    </NotMatch>
                                 </Condition>
                             </div>
                         </div>
