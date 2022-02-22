@@ -18,7 +18,7 @@
 
                     <div class="form-group">
                         <label>Photo of your weight measurement</label>
-                        <InputFile accept=".jpg,.jpeg,.png" class="form-control-file" OnChange="@HandleImageSelected" disabled="@IsImageDataLoading" />
+                        <InputFile accept="image/*" class="form-control-file" OnChange="@HandleImageSelected" disabled="@IsImageDataLoading" />
                     </div>
 
                     <Condition Evaluation="!IsImageDataLoading">

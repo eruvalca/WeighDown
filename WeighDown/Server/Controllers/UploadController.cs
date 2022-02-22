@@ -1,10 +1,8 @@
 ﻿using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using ImageMagick;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Processing;
 
 namespace WeighDown.Server.Controllers
 {
@@ -39,7 +37,8 @@ namespace WeighDown.Server.Controllers
                     }
 
                     var fileName = file.FileName.Split(".")[0];
-                    var fileExt = "." + file.FileName.Split(".")[1];
+                    //var fileExt = "." + file.FileName.Split(".")[1];
+                    var fileExt = ".jpeg";
                     var newFileName = fileName + "_weightlog_" + DateTime.UtcNow.ToString("MM-dd-yyyy_HH-mm-tt") + fileExt;
 
                     var blob = container.GetBlobClient(newFileName);
@@ -47,21 +46,28 @@ namespace WeighDown.Server.Controllers
 
                     using (var memoryStream = new MemoryStream())
                     {
-                        using (Image image = Image.Load(file.OpenReadStream()))
+                        using (var image = new MagickImage(file.OpenReadStream()))
                         {
                             if (image.Width > 600)
                             {
-                                image.Mutate(x => x.Resize(600, 0));
+                                double ratio = 600.00 / image.Width;
+                                Percentage percentage = new(ratio * 100.00);
+
+                                var size = new MagickGeometry(percentage, percentage)
+                                {
+                                    IgnoreAspectRatio = false
+                                };
+
+                                image.Resize(size);
                             }
 
-                            image.SaveAsJpeg(memoryStream);
+                            image.Format = MagickFormat.Jpeg;
+                            image.Write(memoryStream);
                         }
 
-                        using (var fileStream = memoryStream)
-                        {
-                            fileStream.Position = 0;
-                            await blob.UploadAsync(fileStream, new BlobHttpHeaders { ContentType = file.ContentType });
-                        }
+                        using var fileStream = memoryStream;
+                        fileStream.Position = 0;
+                        await blob.UploadAsync(fileStream, new BlobHttpHeaders { ContentType = file.ContentType });
                     }
 
                     return Ok(blob.Uri.ToString());
