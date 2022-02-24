@@ -37,7 +37,6 @@ namespace WeighDown.Client.Pages.Competitions
         private Contestant UserContestant { get; set; }
         private bool HasUserWeighedIn { get; set; }
 
-
         private Dictionary<WeighInDeadline, List<ContestantResultSet>> CompetitionResults { get; set; }
 
         protected override async Task OnInitializedAsync()

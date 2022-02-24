@@ -147,7 +147,7 @@
                                                         <span class="card-text">Contestants yet to weigh in today</span>
                                                         <br />
                                                         <ul>
-                                                            <Iterations Items="Competition.Contestants.Where(c => c.ContestantId != UserContestant.ContestantId).OrderBy(c => c.LastName).ThenBy(c => c.FirstName)">
+                                                            <Iterations Items="Competition.Contestants.Where(c => c.ContestantId != UserContestant.ContestantId && !c.WeightLogs.Any(w => w.MeasurementDate.ToLocalTime().Date == DateTime.Today.Date)).OrderBy(c => c.FirstName)">
                                                                 <li class="card-text"><small>@context.GetFullName()</small></li>
                                                             </Iterations>
                                                         </ul>
