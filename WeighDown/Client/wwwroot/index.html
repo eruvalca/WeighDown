@@ -29,39 +29,7 @@
     </div>
 
     <script src="_framework/blazor.webassembly.js"></script>
-    <script>
-        let newWorker;
-
-        navigator.serviceWorker.register('service-worker.js').then(reg => {
-            reg.addEventListener('updatefound', () => {
-                newWorker = reg.installing;
-
-                newWorker.addEventListener('statechange', () => {
-                    switch (newWorker.state) {
-                        case 'installed':
-                            if (navigator.serviceWorker.controller) {
-                                // new update available
-                                let continueInstall = confirm("A new update is available. Please select 'Ok' to continue to install. You must update for the application to work properly.");
-
-                                if (continueInstall) {
-                                    newWorker.postMessage({ action: 'skipWaiting' });
-                                }
-                            }
-                            // No update available
-                            break;
-                    }
-                });
-            });
-        });
-
-        let refreshing;
-        navigator.serviceWorker.addEventListener('controllerchange', function () {
-            if (refreshing) return;
-            window.location.reload();
-            refreshing = true;
-        });
-        //navigator.serviceWorker.register('service-worker.js');
-    </script>
+    <script src="sw-registrator.js"></script>
 </body>
 
 </html>
