@@ -1,9 +1,9 @@
 ﻿.floating-update-button {
     position: fixed;
-    right: 2rem;
-    bottom: 2rem;
-    padding: 1rem 1.5rem;
-    animation: fadein 2s ease-out;
+    right: 10px;
+    bottom: 85px;
+    padding: 5px;
+    animation: fadein 1s ease-out;
 }
 
 @keyframes fadein {
@@ -12,6 +12,6 @@
     }
 
     to {
-        right: 2rem;
+        right: 10px;
     }
 }
