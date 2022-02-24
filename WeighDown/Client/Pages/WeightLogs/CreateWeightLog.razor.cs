@@ -67,10 +67,14 @@ namespace WeighDown.Client.Pages.WeightLogs
             WeightLog.RecognizedWeightMeasurement = 0;
             IsOverrideMeasurement = false;
 
-            WeightLog.ImageUrl = await UploadService.UploadWeightLogImage(e.File);
-            var reads = await ComputerVisionService.PostWeightLogImageData(new ComputerVisionDTO() { Url = WeightLog.ImageUrl });
+            //WeightLog.ImageUrl = await UploadService.UploadWeightLogImage(e.File);
+            //var reads = await ComputerVisionService.PostWeightLogImageData(new ComputerVisionDTO() { Url = WeightLog.ImageUrl });
 
-            foreach (var read in reads)
+            var resizedFile = await e.File.RequestImageFileAsync(e.File.ContentType, 600, 3000);
+            var result = await UploadService.UploadWeightLogAndVision(resizedFile);
+            WeightLog.ImageUrl = result.Uri;
+
+            foreach (var read in result.Reads)
             {
                 if (decimal.TryParse(read.Replace(" ", "").Replace("-", ""), out var value))
                 {

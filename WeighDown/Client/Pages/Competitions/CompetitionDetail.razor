@@ -112,70 +112,70 @@
                     <div class="col-12">
                         <div class="card shadow">
                             <div class="card-body">
-                                @*<Condition Evaluation="NextWeighInDeadline.DeadlineDate.ToLocalTime().Date == DateTime.Today.ToLocalTime().Date">
+                                <Condition Evaluation="NextWeighInDeadline.DeadlineDate.ToLocalTime().Date == DateTime.Today.ToLocalTime().Date">
                                     <Match>
-                                    <div class="row">
-                                    <div class="col-12 text-center">
-                                    <span class="card-text">Next deadline is today.</span>
-                                    <br />
-                                    <Condition Evaluation="UserContestant is not null">
-                                    <Match>
-                                    <Condition Evaluation="HasUserWeighedIn">
-                                    <Match>
-                                    <span class="card-text">You already weighed in today.</span>
+                                        <div class="row">
+                                            <div class="col-12 text-center">
+                                                <span class="card-text">Next deadline is today.</span>
+                                                <br />
+                                                <Condition Evaluation="UserContestant is not null">
+                                                    <Match>
+                                                        <Condition Evaluation="HasUserWeighedIn">
+                                                            <Match>
+                                                                <span class="card-text">You already weighed in today.</span>
+                                                            </Match>
+
+                                                            <NotMatch>
+                                                                <span class="card-text">You must weigh in by midnight to stay in the competition.</span>
+                                                                <br />
+                                                                <button type="button" class="btn btn-info" @onclick='() => Navigation.NavigateTo($"/new-weight-log/{Competition.CompetitionId}")'>
+                                                                    Weigh In
+                                                                </button>
+                                                            </NotMatch>
+                                                        </Condition>
+                                                    </Match>
+                                                </Condition>
+                                            </div>
+                                        </div>
+
+                                        <Condition Evaluation="UserContestant is not null && Competition.Contestants.Any(c => c.ContestantId != UserContestant.ContestantId)">
+                                            <Match>
+                                                <hr />
+
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <span class="card-text">Contestants yet to weigh in today</span>
+                                                        <br />
+                                                        <ul>
+                                                            <Iterations Items="Competition.Contestants.Where(c => c.ContestantId != UserContestant.ContestantId).OrderBy(c => c.LastName).ThenBy(c => c.FirstName)">
+                                                                <li class="card-text"><small>@context.GetFullName()</small></li>
+                                                            </Iterations>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </Match>
+                                        </Condition>
                                     </Match>
 
                                     <NotMatch>
+                                        <div class="row">
+                                            <div class="col-12 text-center">
+                                                <span class="card-text">Next deadline is @NextWeighInDeadline.DeadlineDate.ToLocalTime().ToString("D")</span>
+                                            </div>
+                                        </div>
+                                    </NotMatch>
+                                </Condition>
+
+
+                                @*<div class="row">
+                                    <div class="col-12 text-center">
                                     <span class="card-text">You must weigh in by midnight to stay in the competition.</span>
                                     <br />
                                     <button type="button" class="btn btn-info" @onclick='() => Navigation.NavigateTo($"/new-weight-log/{Competition.CompetitionId}")'>
                                     Weigh In
                                     </button>
-                                    </NotMatch>
-                                    </Condition>
-                                    </Match>
-                                    </Condition>
                                     </div>
-                                    </div>
-
-                                    <Condition Evaluation="UserContestant is not null && Competition.Contestants.Any(c => c.ContestantId != UserContestant.ContestantId)">
-                                    <Match>
-                                    <hr />
-
-                                    <div class="row">
-                                    <div class="col-12">
-                                    <span class="card-text">Contestants yet to weigh in today</span>
-                                    <br />
-                                    <ul>
-                                    <Iterations Items="Competition.Contestants.Where(c => c.ContestantId != UserContestant.ContestantId).OrderBy(c => c.LastName).ThenBy(c => c.FirstName)">
-                                    <li class="card-text"><small>@context.GetFullName()</small></li>
-                                    </Iterations>
-                                    </ul>
-                                    </div>
-                                    </div>
-                                    </Match>
-                                    </Condition>
-                                    </Match>
-
-                                    <NotMatch>
-                                    <div class="row">
-                                    <div class="col-12 text-center">
-                                    <span class="card-text">Next deadline is @NextWeighInDeadline.DeadlineDate.ToLocalTime().ToString("D")</span>
-                                    </div>
-                                    </div>
-                                    </NotMatch>
-                                    </Condition>*@
-
-
-                                <div class="row">
-                                    <div class="col-12 text-center">
-                                        <span class="card-text">You must weigh in by midnight to stay in the competition.</span>
-                                        <br />
-                                        <button type="button" class="btn btn-info" @onclick='() => Navigation.NavigateTo($"/new-weight-log/{Competition.CompetitionId}")'>
-                                            Weigh In
-                                        </button>
-                                    </div>
-                                </div>
+                                    </div>*@
 
                                 <Condition Evaluation="RemainingWeighInDeadlines.Any()">
                                     <Match>

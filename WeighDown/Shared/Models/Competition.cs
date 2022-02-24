@@ -26,7 +26,7 @@ namespace WeighDown.Shared.Models
 
         public bool IsUserEligibleToJoin(WeighDownUser user)
         {
-            var hasCompetitionStarted = StartDate.ToLocalTime().Date > DateTime.Today.Date;
+            var hasCompetitionStarted = StartDate.ToLocalTime().Date < DateTime.Today.Date;
 
             if (hasCompetitionStarted)
             {
