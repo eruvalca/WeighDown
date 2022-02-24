@@ -2,7 +2,6 @@
     position: fixed;
     right: 10px;
     bottom: 85px;
-    padding: 5px;
     animation: fadein 1s ease-out;
 }
 
