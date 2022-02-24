@@ -22,18 +22,18 @@
                 <div class="card shadow">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-4">
                                 <span class="card-text"><span class="text-muted">Starts</span><br />@Competition.StartDate.ToLocalTime().ToShortDateString()</span>
                             </div>
-                            <div class="col-6">
+                            <div class="col-4 text-center">
+                                <span class="card-text"><span class="text-muted">Entry Fee</span><br />@Competition.PlayInAmount.ToString("C")</span>
+                            </div>
+                            <div class="col-4 text-end">
                                 <span class="card-text"><span class="text-muted">Ends</span><br />@Competition.EndDate.ToLocalTime().ToShortDateString()</span>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-6">
-                                <span class="card-text"><span class="text-muted">Entry Fee</span><br />@Competition.PlayInAmount.ToString("C")</span>
-                            </div>
-                            <div class="col-6">
+                            <div class="col-12 text-center">
                                 <Condition Evaluation="Competition.Contestants.Any()">
                                     <Match>
                                         <details>
@@ -41,7 +41,7 @@
                                                 <span class="text-muted">Contestants</span>
                                             </summary>
                                             <ul>
-                                                <Iterations Items="Competition.Contestants.OrderBy(c => c.LastName).ThenBy(c => c.FirstName)">
+                                                <Iterations Items="Competition.Contestants.OrderBy(c => c.FirstName)">
                                                     <li class="card-text"><small>@context.GetFullName()</small></li>
                                                 </Iterations>
                                             </ul>
@@ -121,13 +121,13 @@
                                     <Match>
                                         <div class="row">
                                             <div class="col-12 text-center">
-                                                <span class="card-text">Next deadline is today.</span>
+                                                <span class="card-text">Next deadline is today</span>
                                                 <br />
                                                 <Condition Evaluation="UserContestant is not null">
                                                     <Match>
                                                         <Condition Evaluation="HasUserWeighedIn">
                                                             <Match>
-                                                                <span class="card-text">You already weighed in today.</span>
+                                                                <span class="card-text">You already weighed in</span>
                                                             </Match>
 
                                                             <NotMatch>
@@ -148,8 +148,8 @@
                                                 <hr />
 
                                                 <div class="row">
-                                                    <div class="col-12">
-                                                        <span class="card-text">Contestants yet to weigh in today</span>
+                                                    <div class="col-12 text-center">
+                                                        <span class="card-text">Remaining Contestants to Weigh In</span>
                                                         <br />
                                                         <ul>
                                                             <Iterations Items="Competition.Contestants.Where(c => c.ContestantId != UserContestant.ContestantId && !c.WeightLogs.Any(w => w.MeasurementDate.ToLocalTime().Date == DateTime.Today.Date)).OrderBy(c => c.FirstName)">
@@ -187,7 +187,7 @@
                                         <hr />
 
                                         <div class="row">
-                                            <div class="col-12">
+                                            <div class="col-12 text-center">
                                                 <details>
                                                     <summary class="card-text">
                                                         Remaining Deadlines

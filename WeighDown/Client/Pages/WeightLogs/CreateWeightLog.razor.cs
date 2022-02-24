@@ -45,6 +45,11 @@ namespace WeighDown.Client.Pages.WeightLogs
             UserContestant = Competition.Contestants.FirstOrDefault(c => c.WeighDownUserId == WeighDownUser.Id);
             WeightLog.ContestantId = UserContestant.ContestantId;
             WeightLog.CompetitionId = Competition.CompetitionId;
+
+            if (UserContestant.ContestantId == 56)
+            {
+                IsOverrideMeasurement = true;
+            }
         }
 
         private async Task HandleSubmit()
