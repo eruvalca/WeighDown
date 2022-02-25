@@ -12,6 +12,79 @@
                     <div class="col-12">
                         <div class="card shadow">
                             <div class="card-body">
+                                <Condition Evaluation="IsCompetitionComplete">
+                                    <Match>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h4 class="card-text text-muted">Competition Finale</h4>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-12 text-center">
+                                                <h5 class="card-text text-muted">Competition Winner</h5>
+                                                <h5 class="card-text">@FinalResults.Where(x => x.IsDeadlineWinner).FirstOrDefault().Contestant.GetFullName()</h5>
+                                                <h5 class="card-text text-success"><strong>@FinalResults.Where(x => x.IsDeadlineWinner).FirstOrDefault().PercentChange.ToString("P3")</strong></h5>
+                                            </div>
+                                        </div>
+
+                                        <hr />
+
+                                        <div class="row">
+                                            <div class="col-12 text-center">
+                                                <h6 class="card-text text-muted">2nd Place</h6>
+
+                                                <Iterations Items="FinalResults.Where(v => !v.IsDeadlineWinner).OrderByDescending(v => v.PercentChange).ThenBy(v => v.Contestant.FirstName).Take(1)">
+                                                    <div class="row">
+                                                        <div class="col-9 text-start">
+                                                            <span class="result-row-text card-text">@context.Contestant.GetFullName()</span>
+                                                        </div>
+                                                        <div class="col-3 text-end">
+                                                            <span class="result-row-text card-text @(context.PercentChange > 0 ? "text-primary" : context.PercentChange == 0 ? "text-warning" : "text-danger")">@context.PercentChange.ToString("P3")</span>
+                                                        </div>
+                                                    </div>
+                                                </Iterations>
+                                            </div>
+                                        </div>
+
+                                        <hr />
+
+                                        <div class="row">
+                                            <div class="col-12 text-center">
+                                                <h6 class="card-text text-muted">3rd Place</h6>
+
+                                                <Iterations Items="FinalResults.Where(v => !v.IsDeadlineWinner).OrderByDescending(v => v.PercentChange).ThenBy(v => v.Contestant.FirstName).Skip(1).OrderByDescending(v => v.PercentChange).ThenBy(v => v.Contestant.FirstName).Take(1)">
+                                                    <div class="row">
+                                                        <div class="col-9 text-start">
+                                                            <span class="result-row-text card-text">@context.Contestant.GetFullName()</span>
+                                                        </div>
+                                                        <div class="col-3 text-end">
+                                                            <span class="result-row-text card-text @(context.PercentChange > 0 ? "text-primary" : context.PercentChange == 0 ? "text-warning" : "text-danger")">@context.PercentChange.ToString("P3")</span>
+                                                        </div>
+                                                    </div>
+                                                </Iterations>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-12 text-center">
+                                                <h6 class="card-text text-muted">Everyone Else</h6>
+
+                                                <Iterations Items="FinalResults.Where(v => !v.IsDeadlineWinner).OrderByDescending(v => v.PercentChange).ThenBy(v => v.Contestant.FirstName).Skip(2)">
+                                                    <div class="row">
+                                                        <div class="col-9 text-start">
+                                                            <span class="result-row-text card-text">@context.Contestant.GetFullName()</span>
+                                                        </div>
+                                                        <div class="col-3 text-end">
+                                                            <span class="result-row-text card-text @(context.PercentChange > 0 ? "text-primary" : context.PercentChange == 0 ? "text-warning" : "text-danger")">@context.PercentChange.ToString("P3")</span>
+                                                        </div>
+                                                    </div>
+                                                </Iterations>
+                                            </div>
+                                        </div>
+                                    </Match>
+                                </Condition>
+
                                 <div class="row">
                                     <div class="col-12">
                                         <h5 class="card-text text-muted">@MostRecentResultSet.Key.DeadlineDate.ToLocalTime().ToShortDateString()</h5>

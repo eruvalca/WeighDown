@@ -23,7 +23,7 @@ namespace WeighDown.Client.Shared.Competitions
             if (CompetitionResults is not null && CompetitionResults.Any())
             {
                 MostRecentResultSet = CompetitionResults
-                    .Where(c => c.Key.IsActive)
+                    .Where(c => c.Key.IsActive && c.Key.DeadlineDate.ToLocalTime().Date != Competition.EndDate.ToLocalTime().Date)
                     .OrderByDescending(c => c.Key.DeadlineDate.ToLocalTime().Date)
                     .Take(1)
                     .FirstOrDefault();
