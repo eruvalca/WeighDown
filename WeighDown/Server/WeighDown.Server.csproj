@@ -1,12 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>249311da-5c8d-4e3e-9147-09c7dce02629</UserSecretsId>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Azure.Storage.Blobs" Version="12.10.0" />
     <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="10.0.0" />
@@ -24,14 +22,26 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.16.0" />
+    <PackageReference Include="Microsoft.ML" Version="1.7.0" />
+    <PackageReference Include="Microsoft.ML.Vision" Version="1.7.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.2" />
+    <PackageReference Include="SciSharp.TensorFlow.Redist" Version="2.3.1" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.16.0" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Client\WeighDown.Client.csproj" />
     <ProjectReference Include="..\Shared\WeighDown.Shared.csproj" />
   </ItemGroup>
-
-
+  <ItemGroup Label="ScaleVision">
+    <None Include="ScaleVision.consumption.cs">
+      <DependentUpon>ScaleVision.mbconfig</DependentUpon>
+    </None>
+    <None Include="ScaleVision.training.cs">
+      <DependentUpon>ScaleVision.mbconfig</DependentUpon>
+    </None>
+    <None Include="ScaleVision.zip">
+      <DependentUpon>ScaleVision.mbconfig</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
