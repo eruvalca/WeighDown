@@ -171,17 +171,6 @@
                                     </NotMatch>
                                 </Condition>
 
-
-                                @*<div class="row">
-                                    <div class="col-12 text-center">
-                                    <span class="card-text">You must weigh in by midnight to stay in the competition.</span>
-                                    <br />
-                                    <button type="button" class="btn btn-info" @onclick='() => Navigation.NavigateTo($"/new-weight-log/{Competition.CompetitionId}")'>
-                                    Weigh In
-                                    </button>
-                                    </div>
-                                    </div>*@
-
                                 <Condition Evaluation="RemainingWeighInDeadlines.Any()">
                                     <Match>
                                         <hr />
@@ -213,7 +202,7 @@
             <Match>
                 <div class="row">
                     <div class="col-12">
-                        <h3>Weekly Results</h3>
+                        <h3>Results</h3>
                     </div>
                 </div>
 
