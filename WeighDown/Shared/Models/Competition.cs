@@ -70,7 +70,7 @@ namespace WeighDown.Shared.Models
         public WeighInDeadline GetNextWeighInDeadline(DateTime date)
         {
             return WeighInDeadlines
-                .Where(w => w.DeadlineDate.ToLocalTime().Date >= date.Date)
+                .Where(w => w.DeadlineDate.ToLocalTime().Date >= date.Date && w.IsActive)
                 .OrderBy(w => w.DeadlineDate)
                 .Take(1)
                 .FirstOrDefault();
@@ -79,7 +79,7 @@ namespace WeighDown.Shared.Models
         public List<WeighInDeadline> GetRemainingWeighInDeadlines(DateTime date)
         {
             return WeighInDeadlines
-                .Where(w => w.DeadlineDate.ToLocalTime().Date > date.Date)
+                .Where(w => w.DeadlineDate.ToLocalTime().Date > date.Date && w.IsActive)
                 .ToList();
         }
 
