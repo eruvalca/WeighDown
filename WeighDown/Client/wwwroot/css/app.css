@@ -24,3 +24,7 @@ html, body {
 div.card {
     margin-bottom: 20px;
 }
+
+.result-row-text {
+    font-size: 14px;
+}
