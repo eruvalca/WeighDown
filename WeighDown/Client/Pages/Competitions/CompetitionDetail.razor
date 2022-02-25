@@ -212,12 +212,12 @@
                             <div class="card-body">
                                 <Condition Evaluation="CompetitionResults.Any()">
                                     <Match>
-                                        <table class="table table-sm table-striped table-borderless table-responsive">
+                                        <table class="table table-sm table-striped table-borderless table-responsive results-table">
                                             <thead>
                                                 <tr>
                                                     <th></th>
                                                     <Iterations Items="Competition.Contestants.OrderBy(c => c.FirstName)">
-                                                        <th>@context.FirstName</th>
+                                                        <th class="text-center">@context.DisplayName</th>
                                                     </Iterations>
                                                 </tr>
                                             </thead>
@@ -228,25 +228,25 @@
                                                         <Iterations Items="context.Value.OrderBy(c => c.Contestant.FirstName)" Context="resultSet">
                                                             <Condition Evaluation="resultSet.IsDeadlineWinner">
                                                                 <Match>
-                                                                    <td class="text-success"><strong>@resultSet.PercentChange.ToString("P2")</strong></td>
+                                                                    <td class="text-success text-center"><strong>@resultSet.PercentChange.ToString("P1")</strong></td>
                                                                 </Match>
 
                                                                 <NotMatch>
                                                                     <Condition Evaluation="resultSet.PercentChange > 0">
                                                                         <Match>
-                                                                            <td class="text-info"><strong>@resultSet.PercentChange.ToString("P2")</strong></td>
+                                                                            <td class="text-info text-center"><strong>@resultSet.PercentChange.ToString("P1")</strong></td>
                                                                         </Match>
 
                                                                         <NotMatch>
                                                                             <Condition Evaluation="resultSet.PercentChange < 0">
                                                                                 <Match>
-                                                                                    <td class="text-danger"><strong>@resultSet.PercentChange.ToString("P2")</strong></td>
+                                                                                    <td class="text-danger text-center"><strong>@resultSet.PercentChange.ToString("P1")</strong></td>
                                                                                 </Match>
                                                                             </Condition>
 
                                                                             <Condition Evaluation="resultSet.PercentChange == 0">
                                                                                 <Match>
-                                                                                    <td class="text-warning"><strong>@resultSet.PercentChange.ToString("P2")</strong></td>
+                                                                                    <td class="text-warning text-center"><strong>@resultSet.PercentChange.ToString("P1")</strong></td>
                                                                                 </Match>
                                                                             </Condition>
                                                                         </NotMatch>
@@ -264,25 +264,25 @@
                                                             <Iterations Items="FinalResults.OrderBy(f => f.Contestant.FirstName)" Context="finalSet">
                                                                 <Condition Evaluation="finalSet.IsDeadlineWinner">
                                                                     <Match>
-                                                                        <td class="text-success"><strong>@finalSet.PercentChange.ToString("P2")</strong></td>
+                                                                        <td class="text-success text-center"><strong>@finalSet.PercentChange.ToString("P1")</strong></td>
                                                                     </Match>
 
                                                                     <NotMatch>
                                                                         <Condition Evaluation="finalSet.PercentChange > 0">
                                                                             <Match>
-                                                                                <td class="text-info"><strong>@finalSet.PercentChange.ToString("P2")</strong></td>
+                                                                                <td class="text-info text-center"><strong>@finalSet.PercentChange.ToString("P1")</strong></td>
                                                                             </Match>
 
                                                                             <NotMatch>
                                                                                 <Condition Evaluation="finalSet.PercentChange < 0">
                                                                                     <Match>
-                                                                                        <td class="text-danger"><strong>@finalSet.PercentChange.ToString("P2")</strong></td>
+                                                                                        <td class="text-danger text-center"><strong>@finalSet.PercentChange.ToString("P1")</strong></td>
                                                                                     </Match>
                                                                                 </Condition>
 
                                                                                 <Condition Evaluation="finalSet.PercentChange == 0">
                                                                                     <Match>
-                                                                                        <td class="text-warning"><strong>@finalSet.PercentChange.ToString("P2")</strong></td>
+                                                                                        <td class="text-warning text-center"><strong>@finalSet.PercentChange.ToString("P1")</strong></td>
                                                                                     </Match>
                                                                                 </Condition>
                                                                             </NotMatch>
