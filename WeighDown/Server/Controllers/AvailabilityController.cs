@@ -21,9 +21,6 @@ namespace WeighDown.Server.Controllers
         public async Task<ActionResult<IEnumerable<Competition>>> GetCompetitions()
         {
             return await _context.Competitions
-                .Include(c => c.Contestants)
-                .ThenInclude(c => c.WeightLogs)
-                .Include(c => c.WeighInDeadlines)
                 .ToListAsync();
         }
     }
