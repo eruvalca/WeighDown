@@ -24,6 +24,21 @@ namespace WeighDown.Shared.Models
         public List<Contestant> Contestants { get; set; }
         public List<WeighInDeadline> WeighInDeadlines { get; set; }
 
+        public bool IsCompetitionComplete()
+        {
+            if (DateTime.Now.Date < EndDate.ToLocalTime().Date)
+            {
+                return false;
+            }
+
+            if (Contestants.Any(c => !c.WeightLogs.Any(w => w.MeasurementDate.ToLocalTime().Date == EndDate.ToLocalTime().Date)))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public bool IsUserEligibleToJoin(WeighDownUser user)
         {
             var hasCompetitionStarted = StartDate.ToLocalTime().Date < DateTime.Today.Date;
@@ -66,6 +81,39 @@ namespace WeighDown.Shared.Models
             return WeighInDeadlines
                 .Where(w => w.DeadlineDate.ToLocalTime().Date > date.Date)
                 .ToList();
+        }
+
+        public List<ContestantResultSet> GetFinalResults()
+        {
+            var finalSet = new List<ContestantResultSet>();
+
+            foreach (var contestant in Contestants)
+            {
+                var contestantResultSet = new ContestantResultSet
+                {
+                    Contestant = contestant,
+                    PreviousWeightMeasurement = contestant.WeightLogs
+                        .Where(w => w.MeasurementDate.ToLocalTime().Date == StartDate.ToLocalTime().Date)
+                        .OrderByDescending(w => w.MeasurementDate.ToLocalTime())
+                        .Take(1)
+                        .FirstOrDefault()
+                        .WeightMeasurement,
+                    DeadlineWeightMeasurement = contestant.WeightLogs
+                        .Where(w => w.MeasurementDate.ToLocalTime().Date == EndDate.ToLocalTime().Date)
+                        .Take(1)
+                        .FirstOrDefault()
+                        .WeightMeasurement
+                };
+
+                finalSet.Add(contestantResultSet);
+            }
+
+            finalSet.OrderByDescending(d => d.PercentChange)
+                .Take(1)
+                .FirstOrDefault()
+                .IsDeadlineWinner = true;
+
+            return finalSet;
         }
 
         public Dictionary<WeighInDeadline, List<ContestantResultSet>> GetWeeklyResults()

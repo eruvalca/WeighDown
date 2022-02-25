@@ -39,6 +39,9 @@ namespace WeighDown.Client.Pages.Competitions
 
         private Dictionary<WeighInDeadline, List<ContestantResultSet>> CompetitionResults { get; set; }
 
+        private bool IsCompetitionComplete { get; set; }
+        private List<ContestantResultSet> FinalResults { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
             User = (await AuthenticationStateTask).User;
@@ -73,6 +76,13 @@ namespace WeighDown.Client.Pages.Competitions
             }
 
             CompetitionResults = Competition.GetWeeklyResults();
+
+            IsCompetitionComplete = Competition.IsCompetitionComplete();
+
+            if (IsCompetitionComplete)
+            {
+                FinalResults = Competition.GetFinalResults();
+            }
         }
 
         private async Task HandleContestantJoin()

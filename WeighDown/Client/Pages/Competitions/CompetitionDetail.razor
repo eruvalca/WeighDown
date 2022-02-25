@@ -247,24 +247,63 @@
                                                                         <Match>
                                                                             <td class="text-info"><strong>@resultSet.PercentChange.ToString("P2")</strong></td>
                                                                         </Match>
+
+                                                                        <NotMatch>
+                                                                            <Condition Evaluation="resultSet.PercentChange < 0">
+                                                                                <Match>
+                                                                                    <td class="text-danger"><strong>@resultSet.PercentChange.ToString("P2")</strong></td>
+                                                                                </Match>
+                                                                            </Condition>
+
+                                                                            <Condition Evaluation="resultSet.PercentChange == 0">
+                                                                                <Match>
+                                                                                    <td class="text-warning"><strong>@resultSet.PercentChange.ToString("P2")</strong></td>
+                                                                                </Match>
+                                                                            </Condition>
+                                                                        </NotMatch>
                                                                     </Condition>
                                                                 </NotMatch>
-                                                            </Condition>
-
-                                                            <Condition Evaluation="resultSet.PercentChange < 0">
-                                                                <Match>
-                                                                    <td class="text-danger"><strong>@resultSet.PercentChange.ToString("P2")</strong></td>
-                                                                </Match>
-                                                            </Condition>
-
-                                                            <Condition Evaluation="resultSet.PercentChange == 0">
-                                                                <Match>
-                                                                    <td class="text-warning"><strong>@resultSet.PercentChange.ToString("P2")</strong></td>
-                                                                </Match>
                                                             </Condition>
                                                         </Iterations>
                                                     </tr>
                                                 </Iterations>
+
+                                                <Condition Evaluation="IsCompetitionComplete && FinalResults is not null">
+                                                    <Match>
+                                                        <tr>
+                                                            <td><strong>Final</strong></td>
+                                                            <Iterations Items="FinalResults.OrderBy(f => f.Contestant.FirstName)" Context="finalSet">
+                                                                <Condition Evaluation="finalSet.IsDeadlineWinner">
+                                                                    <Match>
+                                                                        <td class="text-success"><strong>@finalSet.PercentChange.ToString("P2")</strong></td>
+                                                                    </Match>
+
+                                                                    <NotMatch>
+                                                                        <Condition Evaluation="finalSet.PercentChange > 0">
+                                                                            <Match>
+                                                                                <td class="text-info"><strong>@finalSet.PercentChange.ToString("P2")</strong></td>
+                                                                            </Match>
+
+                                                                            <NotMatch>
+                                                                                <Condition Evaluation="finalSet.PercentChange < 0">
+                                                                                    <Match>
+                                                                                        <td class="text-danger"><strong>@finalSet.PercentChange.ToString("P2")</strong></td>
+                                                                                    </Match>
+                                                                                </Condition>
+
+                                                                                <Condition Evaluation="finalSet.PercentChange == 0">
+                                                                                    <Match>
+                                                                                        <td class="text-warning"><strong>@finalSet.PercentChange.ToString("P2")</strong></td>
+                                                                                    </Match>
+                                                                                </Condition>
+                                                                            </NotMatch>
+                                                                        </Condition>
+                                                                    </NotMatch>
+                                                                </Condition>
+                                                            </Iterations>
+                                                        </tr>
+                                                    </Match>
+                                                </Condition>
                                             </tbody>
                                         </table>
                                     </Match>
