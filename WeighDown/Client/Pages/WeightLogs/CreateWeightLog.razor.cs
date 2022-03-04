@@ -37,6 +37,7 @@ namespace WeighDown.Client.Pages.WeightLogs
         private bool IsOverrideMeasurement { get; set; } = false;
         private bool IsImageDataLoading { get; set; } = false;
         private bool IsClearInputFile { get; set; } = false;
+        private bool HasInputInvalidFile { get; set; } = false;
 
         protected override async Task OnInitializedAsync()
         {
@@ -68,15 +69,13 @@ namespace WeighDown.Client.Pages.WeightLogs
             if (!e.File.Name.Contains(".heic"))
             {
                 IsImageDataLoading = true;
+                HasInputInvalidFile = false;
 
                 WeightLog.ImageUrl = string.Empty;
                 ReadMeasurements = new List<decimal>();
                 WeightLog.WeightMeasurement = 0;
                 WeightLog.RecognizedWeightMeasurement = 0;
                 IsOverrideMeasurement = false;
-
-                //WeightLog.ImageUrl = await UploadService.UploadWeightLogImage(e.File);
-                //var reads = await ComputerVisionService.PostWeightLogImageData(new ComputerVisionDTO() { Url = WeightLog.ImageUrl });
 
                 var resizedFile = await e.File.RequestImageFileAsync(e.File.ContentType, 600, 3000);
                 var result = await UploadService.UploadWeightLogAndVision(resizedFile);
@@ -115,6 +114,8 @@ namespace WeighDown.Client.Pages.WeightLogs
             StateHasChanged();
             IsClearInputFile = false;
             StateHasChanged();
+
+            HasInputInvalidFile = true;
         }
     }
 }
