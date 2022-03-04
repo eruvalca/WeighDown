@@ -36,6 +36,7 @@ namespace WeighDown.Client.Pages.WeightLogs
         private List<decimal> ReadMeasurements { get; set; } = new List<decimal>();
         private bool IsOverrideMeasurement { get; set; } = false;
         private bool IsImageDataLoading { get; set; } = false;
+        private bool IsClearInputFile { get; set; } = false;
 
         protected override async Task OnInitializedAsync()
         {
@@ -64,41 +65,56 @@ namespace WeighDown.Client.Pages.WeightLogs
 
         private async Task HandleImageSelected(InputFileChangeEventArgs e)
         {
-            IsImageDataLoading = true;
-
-            WeightLog.ImageUrl = string.Empty;
-            ReadMeasurements = new List<decimal>();
-            WeightLog.WeightMeasurement = 0;
-            WeightLog.RecognizedWeightMeasurement = 0;
-            IsOverrideMeasurement = false;
-
-            //WeightLog.ImageUrl = await UploadService.UploadWeightLogImage(e.File);
-            //var reads = await ComputerVisionService.PostWeightLogImageData(new ComputerVisionDTO() { Url = WeightLog.ImageUrl });
-
-            var resizedFile = await e.File.RequestImageFileAsync(e.File.ContentType, 600, 3000);
-            var result = await UploadService.UploadWeightLogAndVision(resizedFile);
-            WeightLog.ImageUrl = result.Uri;
-
-            foreach (var read in result.Reads)
+            if (!e.File.Name.Contains(".heic"))
             {
-                if (decimal.TryParse(read.Replace(" ", "").Replace("-", ""), out var value))
+                IsImageDataLoading = true;
+
+                WeightLog.ImageUrl = string.Empty;
+                ReadMeasurements = new List<decimal>();
+                WeightLog.WeightMeasurement = 0;
+                WeightLog.RecognizedWeightMeasurement = 0;
+                IsOverrideMeasurement = false;
+
+                //WeightLog.ImageUrl = await UploadService.UploadWeightLogImage(e.File);
+                //var reads = await ComputerVisionService.PostWeightLogImageData(new ComputerVisionDTO() { Url = WeightLog.ImageUrl });
+
+                var resizedFile = await e.File.RequestImageFileAsync(e.File.ContentType, 600, 3000);
+                var result = await UploadService.UploadWeightLogAndVision(resizedFile);
+                WeightLog.ImageUrl = result.Uri;
+
+                foreach (var read in result.Reads)
                 {
-                    ReadMeasurements.Add(value);
+                    if (decimal.TryParse(read.Replace(" ", "").Replace("-", ""), out var value))
+                    {
+                        ReadMeasurements.Add(value);
+                    }
                 }
-            }
 
-            WeightLog.RecognizedWeightMeasurement = ReadMeasurements.FirstOrDefault();
+                WeightLog.RecognizedWeightMeasurement = ReadMeasurements.FirstOrDefault();
 
-            if (WeightLog.RecognizedWeightMeasurement == 0)
-            {
-                IsOverrideMeasurement = true;
+                if (WeightLog.RecognizedWeightMeasurement == 0)
+                {
+                    IsOverrideMeasurement = true;
+                }
+                else
+                {
+                    WeightLog.WeightMeasurement = WeightLog.RecognizedWeightMeasurement;
+                }
+
+                IsImageDataLoading = false;
             }
             else
             {
-                WeightLog.WeightMeasurement = WeightLog.RecognizedWeightMeasurement;
+                ClearInputFile();
             }
+        }
 
-            IsImageDataLoading = false;
+        private void ClearInputFile()
+        {
+            IsClearInputFile = true;
+            StateHasChanged();
+            IsClearInputFile = false;
+            StateHasChanged();
         }
     }
 }
