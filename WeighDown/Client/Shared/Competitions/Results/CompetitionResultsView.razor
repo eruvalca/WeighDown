@@ -92,7 +92,7 @@
 
                     <Condition Evaluation="CompetitionResults.Any(c => c.Key.WeighInDeadlineId != MostRecentResultSet.Key.WeighInDeadlineId)">
                         <Match>
-                            <Iterations Items="CompetitionResults.Where(c => c.Key.WeighInDeadlineId != MostRecentResultSet.Key.WeighInDeadlineId)">
+                            <Iterations Items="CompetitionResults.Where(c => c.Key.WeighInDeadlineId != MostRecentResultSet.Key.WeighInDeadlineId).OrderByDescending(c => c.Key.DeadlineDate)">
                                 <div class="col-12">
                                     <PastResultCard Results="context" />
                                 </div>
