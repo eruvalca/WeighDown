@@ -10,6 +10,8 @@ namespace WeighDown.Client.Shared.Competitions.Results
     {
         [Parameter]
         public Competition Competition { get; set; }
+        [Parameter]
+        public Contestant UserContestant { get; set; }
 
         private Dictionary<WeighInDeadline, List<ContestantResultSet>> CompetitionResults { get; set; }
         private KeyValuePair<WeighInDeadline, List<ContestantResultSet>> MostRecentResultSet { get; set; }

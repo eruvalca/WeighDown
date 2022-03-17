@@ -17,6 +17,22 @@ namespace WeighDown.Shared.Models
         public int CompetitionId { get; set; }
         public List<WeightLog> WeightLogs { get; set; }
 
+        public decimal InitialWeight => WeightLogs
+            .OrderBy(w => w.MeasurementDate.Date)
+            .ThenBy(w => w.WeightLogId)
+            .FirstOrDefault()
+            .WeightMeasurement;
+
+        public decimal FinalWeight => WeightLogs
+            .OrderByDescending(w => w.MeasurementDate.Date) 
+            .ThenByDescending(w => w.WeightLogId)
+            .FirstOrDefault()
+            .WeightMeasurement;
+
+        public decimal TotalWeightLost => InitialWeight - FinalWeight;
+
+        public decimal PercentageLost => (InitialWeight - FinalWeight) / InitialWeight;
+
         public string GetFullName()
         {
             return string.Concat(FirstName, " ", LastName);

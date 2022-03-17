@@ -24,6 +24,12 @@ namespace WeighDown.Shared.Models
         public List<Contestant> Contestants { get; set; }
         public List<WeighInDeadline> WeighInDeadlines { get; set; }
 
+        public decimal TotalInitialWeight => Contestants.Sum(c => c.InitialWeight);
+        public decimal TotalFinalWeight => Contestants.Sum(c => c.FinalWeight);
+        public decimal TotalWeightLost => TotalInitialWeight - TotalFinalWeight;
+        public decimal TotalPctLost => (TotalInitialWeight - TotalFinalWeight) / TotalInitialWeight;
+        public decimal AvgPctLost => Contestants.Sum(c => c.PercentageLost) / Contestants.Count;
+
         public bool IsCompetitionComplete()
         {
             if (DateTime.Now.Date < EndDate.ToLocalTime().Date)

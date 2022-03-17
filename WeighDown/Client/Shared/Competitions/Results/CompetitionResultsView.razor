@@ -7,6 +7,36 @@
         </div>
 
         <div class="row">
+            <div class="col-4">
+                <div class="card shadow text-center">
+                    <div class="card-body">
+                        <h6 class="card-text text-muted">Your Pct Lost</h6>
+                        <hr />
+                        <span class="card-text">@UserContestant.PercentageLost.ToString("P3")</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card shadow text-center">
+                    <div class="card-body">
+                        <h6 class="card-text text-muted">Avg Pct Lost</h6>
+                        <hr />
+                        <span class="card-text">@Competition.AvgPctLost.ToString("P3")</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card shadow text-center">
+                    <div class="card-body">
+                        <h6 class="card-text text-muted">Total Pct Lost</h6>
+                        <hr />
+                        <span class="card-text">@Competition.TotalPctLost.ToString("P3")</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
             <Condition Evaluation="CompetitionResults.Any()">
                 <Match>
                     <div class="col-12">
