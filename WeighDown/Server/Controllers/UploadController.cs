@@ -60,9 +60,9 @@ namespace WeighDown.Server.Controllers
                         await blob.UploadAsync(fileStream, new BlobHttpHeaders { ContentType = file.ContentType });
                     }
 
-                    var reads = await _computerVisionService.ReadFileUrl(blob.Uri.ToString());
+                    //var reads = await _computerVisionService.ReadFileUrl(blob.Uri.ToString());
 
-                    return Ok(new ImageVisionDTO { Uri = blob.Uri.ToString(), Reads = reads });
+                    return Ok(new ImageVisionDTO { Uri = blob.Uri.ToString(), Reads = new List<string>() });
                 }
 
                 return BadRequest();
