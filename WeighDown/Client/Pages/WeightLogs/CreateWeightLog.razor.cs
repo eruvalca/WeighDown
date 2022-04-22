@@ -58,10 +58,18 @@ namespace WeighDown.Client.Pages.WeightLogs
         {
             IsFormSubmitting = true;
 
-            WeightLog.MeasurementDate = WeightLog.MeasurementDate.ToUniversalTime();
+            if (WeightLog.WeightMeasurement > 999 || WeightLog.WeightMeasurement < 100)
+            {
+                WeightLog.WeightMeasurement = 0;
+                IsFormSubmitting = false;
+            }
+            else
+            {
+                WeightLog.MeasurementDate = WeightLog.MeasurementDate.ToUniversalTime();
 
-            WeightLog = await WeightLogsService.PostWeightLog(WeightLog);
-            Navigation.NavigateTo($"competition-detail/{Competition.CompetitionId}");
+                WeightLog = await WeightLogsService.PostWeightLog(WeightLog);
+                Navigation.NavigateTo($"competition-detail/{Competition.CompetitionId}");
+            }
         }
 
         private async Task HandleImageSelected(InputFileChangeEventArgs e)
