@@ -10,7 +10,7 @@
             <div class="col-4">
                 <div class="card shadow text-center">
                     <div class="card-body">
-                        <h6 class="card-text text-muted">Your Pct Lost</h6>
+                        <h6 class="card-text text-muted">Your Weight Lost</h6>
                         <hr />
                         <span class="card-text">@UserContestant.PercentageLost.ToString("P3")</span>
                     </div>
@@ -19,7 +19,7 @@
             <div class="col-4">
                 <div class="card shadow text-center">
                     <div class="card-body">
-                        <h6 class="card-text text-muted">Avg Pct Lost</h6>
+                        <h6 class="card-text text-muted">Avg Weight Lost</h6>
                         <hr />
                         <span class="card-text">@Competition.AvgPctLost.ToString("P3")</span>
                     </div>
@@ -28,7 +28,7 @@
             <div class="col-4">
                 <div class="card shadow text-center">
                     <div class="card-body">
-                        <h6 class="card-text text-muted">Total Pct Lost</h6>
+                        <h6 class="card-text text-muted">Total Weight Lost</h6>
                         <hr />
                         <span class="card-text">@Competition.TotalPctLost.ToString("P3")</span>
                     </div>
@@ -45,10 +45,21 @@
                                 <Condition Evaluation="IsCompetitionComplete">
                                     <Match>
                                         <div class="row">
-                                            <div class="col-12">
-                                                <h4 class="card-text text-muted">Competition Finale</h4>
+                                            <div class="col-12 text-center">
+                                                <h3 class="card-text">Competition Finale</h3>
                                             </div>
                                         </div>
+
+                                        <hr />
+                                        
+                                        <div class="row">
+                                            <div class="col-12 text-center">
+                                                <h5 class="card-text text-muted">Total Group Weight Lost</h5>
+                                                <h6 class="card-text text-success"><strong>@Competition.TotalWeightLost</strong></h6>
+                                            </div>
+                                        </div>
+
+                                        <hr />
 
                                         <div class="row">
                                             <div class="col-12 text-center">
@@ -65,14 +76,8 @@
                                                 <h6 class="card-text text-muted">2nd Place</h6>
 
                                                 <Iterations Items="FinalResults.Where(v => !v.IsDeadlineWinner).OrderByDescending(v => v.PercentChange).ThenBy(v => v.Contestant.FirstName).Take(1)">
-                                                    <div class="row">
-                                                        <div class="col-9 text-start">
-                                                            <span class="result-row-text card-text">@context.Contestant.GetFullName()</span>
-                                                        </div>
-                                                        <div class="col-3 text-end">
-                                                            <span class="result-row-text card-text @(context.PercentChange > 0 ? "text-primary" : context.PercentChange == 0 ? "text-warning" : "text-danger")">@context.PercentChange.ToString("P3")</span>
-                                                        </div>
-                                                    </div>
+                                                    <h6 class="card-text">@context.Contestant.GetFullName()</h6>
+                                                    <h6 class="card-text text-success"><strong>@context.PercentChange.ToString("P3")</strong></h6>
                                                 </Iterations>
                                             </div>
                                         </div>
@@ -84,14 +89,8 @@
                                                 <h6 class="card-text text-muted">3rd Place</h6>
 
                                                 <Iterations Items="FinalResults.Where(v => !v.IsDeadlineWinner).OrderByDescending(v => v.PercentChange).ThenBy(v => v.Contestant.FirstName).Skip(1).OrderByDescending(v => v.PercentChange).ThenBy(v => v.Contestant.FirstName).Take(1)">
-                                                    <div class="row">
-                                                        <div class="col-9 text-start">
-                                                            <span class="result-row-text card-text">@context.Contestant.GetFullName()</span>
-                                                        </div>
-                                                        <div class="col-3 text-end">
-                                                            <span class="result-row-text card-text @(context.PercentChange > 0 ? "text-primary" : context.PercentChange == 0 ? "text-warning" : "text-danger")">@context.PercentChange.ToString("P3")</span>
-                                                        </div>
-                                                    </div>
+                                                    <h6 class="card-text">@context.Contestant.GetFullName()</h6>
+                                                    <h6 class="card-text text-success"><strong>@context.PercentChange.ToString("P3")</strong></h6>
                                                 </Iterations>
                                             </div>
                                         </div>
@@ -102,10 +101,10 @@
 
                                                 <Iterations Items="FinalResults.Where(v => !v.IsDeadlineWinner).OrderByDescending(v => v.PercentChange).ThenBy(v => v.Contestant.FirstName).Skip(2)">
                                                     <div class="row">
-                                                        <div class="col-9 text-start">
+                                                        <div class="col-8 text-start">
                                                             <span class="result-row-text card-text">@context.Contestant.GetFullName()</span>
                                                         </div>
-                                                        <div class="col-3 text-end">
+                                                        <div class="col-4 text-end">
                                                             <span class="result-row-text card-text @(context.PercentChange > 0 ? "text-primary" : context.PercentChange == 0 ? "text-warning" : "text-danger")">@context.PercentChange.ToString("P3")</span>
                                                         </div>
                                                     </div>

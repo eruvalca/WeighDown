@@ -28,6 +28,7 @@ namespace WeighDown.Shared.Models
         public decimal TotalFinalWeight => Contestants.Sum(c => c.FinalWeight);
         public decimal TotalWeightLost => TotalInitialWeight - TotalFinalWeight;
         public decimal TotalPctLost => (TotalInitialWeight - TotalFinalWeight) / TotalInitialWeight;
+        public decimal AvgWeightLost => (TotalInitialWeight - TotalFinalWeight) / Contestants.Count;
         public decimal AvgPctLost => Contestants.Sum(c => c.PercentageLost) / Contestants.Count;
 
         public bool IsCompetitionComplete()
