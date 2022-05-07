@@ -9,6 +9,14 @@
         <Condition Evaluation="Competitions.Any()">
             <Match>
                 <div class="row">
+                    <div class="col-12 text-center">
+                        <button type="button" class="btn btn-secondary" @onclick='() => Navigation.NavigateTo("/new-competition")'>Create New</button>
+                    </div>
+                </div>
+
+                <br />
+
+                <div class="row">
                     <Iterations Items="Competitions">
                         <div class="col-12 col-md-4">
                             <CompetitionQuickDetailsCard Competition="context" />

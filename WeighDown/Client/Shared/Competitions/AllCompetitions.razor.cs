@@ -24,7 +24,6 @@ namespace WeighDown.Client.Shared.Competitions
         {
             var allCompetitions = await CompetitionsService.GetCompetitions();
             Competitions = allCompetitions
-                .Where(c => c.EndDate.ToLocalTime().Date >= DateTime.Today.Date)
                 .OrderByDescending(c => c.StartDate)
                 .ToList();
         }
