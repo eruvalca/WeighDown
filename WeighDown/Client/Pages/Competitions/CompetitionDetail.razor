@@ -7,8 +7,17 @@
                 <h3>@Competition.Name</h3>
             </div>
             <div class="col-4 text-end">
-                <Condition Evaluation='User.IsInRole("Admin")'>
+                <Condition Evaluation='Competition.CreatedByUserId == WeighDownUser.Id || User.IsInRole("Admin")'>
                     <Match>
+                        <Condition Evaluation="DateTime.Today.Date < Competition.StartDate.ToLocalTime().Date || User.IsInRole("Admin")">
+                            <Match>
+                                <button type="button" class="btn btn-sm btn-info" @onclick='() => Navigation.NavigateTo($"/edit-competition/{Competition.CompetitionId}")'>
+                                    Edit
+                                </button>
+                                <br />
+                            </Match>
+                        </Condition>
+
                         <button type="button" class="btn btn-sm btn-danger" @onclick="HandleDelete">
                             Delete
                         </button>

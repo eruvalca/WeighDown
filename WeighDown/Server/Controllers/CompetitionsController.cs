@@ -57,13 +57,17 @@ namespace WeighDown.Server.Controllers
 
             _context.Entry(competition).State = EntityState.Modified;
 
-            //competition.WeighInDeadlines.ForEach(w =>
-            //{
-            //    w.DeadlineDate = w.DeadlineDate.ToUniversalTime();
-            //    w.WeighInDeadlineId = 0;
-            //});
+            var existingDeadlines = await _context.WeighInDeadlines.Where(w => w.CompetitionId == id).ToListAsync();
 
-            //await _context.WeighInDeadlines.AddRangeAsync(competition.WeighInDeadlines);
+            _context.RemoveRange(existingDeadlines);
+
+            competition.WeighInDeadlines.ForEach(w =>
+            {
+                w.DeadlineDate = w.DeadlineDate.ToUniversalTime();
+                w.WeighInDeadlineId = 0;
+            });
+
+            await _context.WeighInDeadlines.AddRangeAsync(competition.WeighInDeadlines);
 
             try
             {

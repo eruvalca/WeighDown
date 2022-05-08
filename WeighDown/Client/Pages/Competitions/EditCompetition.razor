@@ -1,0 +1,105 @@
+﻿@page "/edit-competition/{CompetitionId:int}"
+
+<Condition Evaluation="Competition is not null">
+    <Match>
+        <div class="row">
+            <div class="col-12">
+                <h3>Edit Competition</h3>
+            </div>
+        </div>
+
+        <EditForm Model="@Competition" OnValidSubmit="HandleSubmit">
+            <div class="row">
+                <div class="col-12">
+                    <h4>Details</h4>
+                    <div class="form-group">
+                        <label class="form-label">Name</label>
+                        <InputText @bind-Value="Competition.Name" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Start Date</label>
+                        <InputDate @bind-Value="StartDate" class="form-control" min='@DateTime.Today.ToString("yyyy-MM-dd")' />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Number of Weeks</label>
+                        <InputNumber @bind-Value="NumberOfWeeks" class="form-control" min="1" max="52" step="1" />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">End Date</label>
+                        <InputDate @bind-Value="Competition.EndDate" class="form-control" readonly />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Play In Amount</label>
+                        <InputNumber @bind-Value="Competition.PlayInAmount" class="form-control" step="0.01" />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Third Place Prize Amount</label>
+                        <InputNumber @bind-Value="Competition.ThirdPlacePrizeAmount" class="form-control" step="0.01" />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Second Place Prize Amount</label>
+                        <InputNumber @bind-Value="Competition.SecondPlacePrizeAmount" class="form-control" step="0.01" />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">First Place Prize Amount</label>
+                        <InputNumber @bind-Value="Competition.FirstPlacePrizeAmount" class="form-control" step="0.01" />
+                    </div>
+                </div>
+                <div class="col-12">
+                    <h5>Weigh-in dates</h5>
+                    <Iterations Context="deadline" Items="Competition.WeighInDeadlines.OrderBy(w => w.DeadlineDate)">
+                        <Condition Evaluation="deadline.DeadlineDate == Competition.StartDate || deadline.DeadlineDate == Competition.EndDate">
+                            <Match>
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <InputCheckbox @bind-Value="deadline.IsActive" class="form-check-input" disabled />
+                                        <label class="form-check-label">@deadline.DeadlineDate.ToShortDateString()</label>
+                                    </div>
+                                </div>
+                            </Match>
+
+                            <NotMatch>
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <InputCheckbox @bind-Value="deadline.IsActive" class="form-check-input" />
+                                        <label class="form-check-label">@deadline.DeadlineDate.ToShortDateString()</label>
+                                    </div>
+                                </div>
+                            </NotMatch>
+                        </Condition>
+                    </Iterations>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-end">
+                    <button @onclick='() => Navigation.NavigateTo("/")' class="btn btn-secondary"
+                            type="reset">
+                        Cancel
+                    </button>
+                    <Condition Evaluation="IsFormSubmitting">
+                        <Match>
+                            <button class="btn btn-success" disabled type="submit">
+                                <span class="spinner-border spinner-border-sm"></span>
+                                <span> Submitting</span>
+                            </button>
+                        </Match>
+
+                        <NotMatch>
+                            <button class="btn btn-success" type="submit">
+                                <span>Submit</span>
+                            </button>
+                        </NotMatch>
+                    </Condition>
+                </div>
+            </div>
+        </EditForm>
+    </Match>
+
+    <NotMatch>
+        <div class="row">
+            <div class="col-12 text-center">
+                <LoadingSpinner MarginTop="50" />
+            </div>
+        </div>
+    </NotMatch>
+</Condition>
