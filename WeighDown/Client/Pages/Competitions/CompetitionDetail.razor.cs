@@ -59,13 +59,17 @@ namespace WeighDown.Client.Pages.Competitions
 
             Competition.WeighInDeadlines.ForEach(w => w.DeadlineDate = w.DeadlineDate.ToLocalTime());
             NextWeighInDeadline = Competition.GetNextWeighInDeadline(DateTime.Today);
-            RemainingWeighInDeadlines = Competition.GetRemainingWeighInDeadlines(NextWeighInDeadline.DeadlineDate.Date);
+
+            if (NextWeighInDeadline != null)
+            {
+                RemainingWeighInDeadlines = Competition.GetRemainingWeighInDeadlines(NextWeighInDeadline.DeadlineDate.Date);
+            }
 
             CanUserJoin = Competition.IsUserEligibleToJoin(WeighDownUser);
 
             UserContestant = Competition.Contestants.FirstOrDefault(c => c.WeighDownUserId == WeighDownUser.Id);
 
-            if (UserContestant is not null)
+            if (UserContestant is not null && NextWeighInDeadline != null)
             {
                 HasUserWeighedIn = UserContestant.WeightLogs.Any(w => w.MeasurementDate.ToLocalTime().Date == NextWeighInDeadline.DeadlineDate.ToLocalTime().Date);
             }
